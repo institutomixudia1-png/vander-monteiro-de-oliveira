@@ -210,6 +210,39 @@ export const HunterView: React.FC<HunterViewProps> = ({
     localStorage.setItem(STORAGE_KEY_FOLHAS, JSON.stringify(folhasPagamento));
   }, [folhasPagamento]);
 
+  // Listener para recarregar todos os dados após restauração do Supabase
+  useEffect(() => {
+    const handleDatabaseRestored = () => {
+      try {
+        const savedDados = localStorage.getItem(STORAGE_KEY_HUNTER_DADOS);
+        if (savedDados) setHunterDados(JSON.parse(savedDados));
+
+        const savedSeg = localStorage.getItem(STORAGE_KEY_SEGURADORAS);
+        if (savedSeg) setSeguradoras(JSON.parse(savedSeg));
+
+        const savedContr = localStorage.getItem(STORAGE_KEY_CONTRATOS);
+        if (savedContr) setContratos(JSON.parse(savedContr));
+
+        const savedEstag = localStorage.getItem(STORAGE_KEY_ESTAGIARIOS);
+        if (savedEstag) setEstagiarios(JSON.parse(savedEstag));
+
+        const savedTces = localStorage.getItem(STORAGE_KEY_TCES);
+        if (savedTces) setTces(JSON.parse(savedTces));
+
+        const savedResc = localStorage.getItem(STORAGE_KEY_RESCISOES);
+        if (savedResc) setRescisoes(JSON.parse(savedResc));
+
+        const savedFolhas = localStorage.getItem(STORAGE_KEY_FOLHAS);
+        if (savedFolhas) setFolhasPagamento(JSON.parse(savedFolhas));
+      } catch (err) {
+        console.error('Erro ao atualizar estados locais após restauração:', err);
+      }
+    };
+
+    window.addEventListener('hunter_database_restored', handleDatabaseRestored);
+    return () => window.removeEventListener('hunter_database_restored', handleDatabaseRestored);
+  }, []);
+
   const handleSaveFolha = (novaFolha: FolhaPagamentoSalva) => {
     setFolhasPagamento((prev) => [novaFolha, ...prev]);
   };

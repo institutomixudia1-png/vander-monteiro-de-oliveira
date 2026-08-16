@@ -16,6 +16,7 @@ export async function downloadProjectZip() {
       "lint": "tsc --noEmit"
     },
     "dependencies": {
+      "@supabase/supabase-js": "^2.49.1",
       "@tailwindcss/vite": "^4.1.14",
       "@vitejs/plugin-react": "^5.0.4",
       "html2pdf.js": "^0.14.0",

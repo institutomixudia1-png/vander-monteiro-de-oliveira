@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Lock, Eye, EyeOff, ShieldAlert, ArrowRight, HelpCircle, CheckCircle2 } from 'lucide-react';
+import { Lock, Eye, EyeOff, ShieldAlert, ArrowRight, HelpCircle, Loader2, CloudDownload, CheckCircle2 } from 'lucide-react';
 import { HunterLogo } from './HunterLogo';
 import { HunterWatermark } from './HunterWatermark';
 import { FORGOT_SYSTEM_PASSWORD } from '../types/hunter';
+import { restoreFromSupabase } from '../lib/supabase';
 
 interface SystemLockScreenProps {
   currentPassword: string;
@@ -19,14 +20,34 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [adminNotice, setAdminNotice] = useState(false);
+  const [isRestoringCloud, setIsRestoringCloud] = useState(false);
+  const [cloudStatusText, setCloudStatusText] = useState('');
 
-  const handleUnlockSubmit = (e: React.FormEvent) => {
+  const handleUnlockSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
 
     const cleanPass = inputSenha.trim();
     if (cleanPass === currentPassword) {
-      onUnlock();
+      // Baixar banco de dados da nuvem e restaurar instantaneamente
+      setIsRestoringCloud(true);
+      setCloudStatusText('Sincronizando com a nuvem Supabase...');
+
+      try {
+        const res = await restoreFromSupabase();
+        if (res.success) {
+          setCloudStatusText('Banco de dados da nuvem restaurado!');
+        } else {
+          console.warn('Aviso ao sincronizar da nuvem:', res.message);
+        }
+      } catch (err: any) {
+        console.warn('Não foi possível sincronizar da nuvem:', err);
+      } finally {
+        setTimeout(() => {
+          setIsRestoringCloud(false);
+          onUnlock();
+        }, 500);
+      }
     } else {
       setErrorMsg('Senha incorreta! Digite a senha de 6 dígitos válida.');
     }
@@ -82,6 +103,21 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
             </div>
           )}
 
+          {/* Estado de Restauração da Nuvem */}
+          {isRestoringCloud && (
+            <div className="w-full p-4 mb-4 rounded-2xl bg-[#3ECF8E]/15 border border-[#3ECF8E]/40 text-left animate-fadeIn flex items-center gap-3">
+              <Loader2 className="w-5 h-5 animate-spin text-[#3ECF8E] shrink-0" />
+              <div>
+                <p className="text-xs font-extrabold text-[#3ECF8E]">
+                  Restaurando dados da nuvem Supabase
+                </p>
+                <p className="text-[11px] text-zinc-300">
+                  {cloudStatusText || 'Atualizando cadastros no navegador...'}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Formulário da Senha */}
           <form onSubmit={handleUnlockSubmit} className="w-full space-y-4">
             {errorMsg && (
@@ -101,10 +137,11 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
                   maxLength={6}
                   required
                   autoFocus
+                  disabled={isRestoringCloud}
                   value={inputSenha}
                   onChange={(e) => setInputSenha(e.target.value.replace(/\D/g, ''))}
                   placeholder="• • • • • •"
-                  className="w-full bg-zinc-900/90 border border-amber-500/40 rounded-2xl px-4 py-3.5 text-center text-2xl font-mono tracking-[0.4em] text-[#39FF14] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition-all shadow-inner"
+                  className="w-full bg-zinc-900/90 border border-amber-500/40 rounded-2xl px-4 py-3.5 text-center text-2xl font-mono tracking-[0.4em] text-[#39FF14] focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/30 transition-all shadow-inner disabled:opacity-50"
                   style={{ color: '#39FF14' }}
                 />
                 <button
@@ -120,10 +157,20 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
 
             <button
               type="submit"
-              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 text-zinc-950 font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer shadow-[0_0_25px_rgba(255,215,0,0.4)] flex items-center justify-center gap-2"
+              disabled={isRestoringCloud}
+              className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-500 text-zinc-950 font-black text-sm uppercase tracking-wider hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer shadow-[0_0_25px_rgba(255,215,0,0.4)] flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              <span>Acessar Sistema</span>
-              <ArrowRight className="w-4 h-4" />
+              {isRestoringCloud ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-zinc-950" />
+                  <span>Sincronizando Nuvem...</span>
+                </>
+              ) : (
+                <>
+                  <span>Acessar Sistema</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </form>
 

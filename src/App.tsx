@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react';
 import { TabId, Empresa, Estagiario, Escola, STORAGE_KEY_SYSTEM_PASSWORD, DEFAULT_SYSTEM_PASSWORD, TCEContrato, TermoRescisaoData, ContratoParceria, getEstagiariosAtivosDaEmpresa } from './types/hunter';
 import { DesktopHeader } from './components/DesktopHeader';
 import { DownloadModal } from './components/DownloadModal';
-import { BackupModal } from './components/BackupModal';
 import { SystemLockScreen } from './components/SystemLockScreen';
 import { HunterView } from './components/views/HunterView';
 import { EmpresasView } from './components/views/EmpresasView';
@@ -15,6 +14,8 @@ import { EstagiariosView } from './components/views/EstagiariosView';
 import { EscolasView } from './components/views/EscolasView';
 import { HunterWatermark } from './components/HunterWatermark';
 import { DEFAULT_EMPRESAS, DEFAULT_ESTAGIARIOS, DEFAULT_ESCOLAS, DEFAULT_SEGURADORAS, DEFAULT_CONTRATOS } from './data/sampleData';
+import { syncAllToSupabase } from './lib/supabase';
+import { CheckCircle2, AlertTriangle } from 'lucide-react';
 
 const STORAGE_KEYS = {
   EMPRESAS: 'hunter_desktop_empresas_v1',
@@ -25,7 +26,11 @@ const STORAGE_KEYS = {
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('hunter');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
-  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+
+  // Cloud Save State
+  const [isSavingCloud, setIsSavingCloud] = useState(false);
+  const [cloudSaveStatus, setCloudSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [cloudSaveMsg, setCloudSaveMsg] = useState<string | null>(null);
 
   // Estado para Senha de Acesso ao Sistema
   const [systemPassword, setSystemPassword] = useState<string>(() => {
@@ -43,6 +48,59 @@ export default function App() {
   const handleUpdatePassword = (newPass: string) => {
     setSystemPassword(newPass);
     localStorage.setItem(STORAGE_KEY_SYSTEM_PASSWORD, newPass);
+  };
+
+  // Recarrega todos os dados do localStorage (usado após restauração da nuvem)
+  const reloadAllLocalData = () => {
+    try {
+      const savedPass = localStorage.getItem(STORAGE_KEY_SYSTEM_PASSWORD);
+      if (savedPass && savedPass.trim()) setSystemPassword(savedPass.trim());
+
+      const savedEmpresas = localStorage.getItem(STORAGE_KEYS.EMPRESAS);
+      if (savedEmpresas) {
+        const parsed = JSON.parse(savedEmpresas);
+        if (Array.isArray(parsed)) setEmpresas(parsed);
+      }
+
+      const savedEstag = localStorage.getItem(STORAGE_KEYS.ESTAGIARIOS);
+      if (savedEstag) {
+        const parsed = JSON.parse(savedEstag);
+        if (Array.isArray(parsed)) setEstagiarios(parsed);
+      }
+
+      const savedEscolas = localStorage.getItem(STORAGE_KEYS.ESCOLAS);
+      if (savedEscolas) {
+        const parsed = JSON.parse(savedEscolas);
+        if (Array.isArray(parsed)) setEscolas(parsed);
+      }
+    } catch (e) {
+      console.error('Erro ao recarregar dados do localStorage:', e);
+    }
+  };
+
+  const handleSaveToCloud = async () => {
+    if (isSavingCloud) return;
+    try {
+      setIsSavingCloud(true);
+      setCloudSaveStatus('idle');
+      const res = await syncAllToSupabase();
+      if (res.success) {
+        setCloudSaveStatus('success');
+        setCloudSaveMsg(res.message);
+      } else {
+        setCloudSaveStatus('error');
+        setCloudSaveMsg(res.message);
+      }
+    } catch (err: any) {
+      setCloudSaveStatus('error');
+      setCloudSaveMsg(err.message || 'Erro ao salvar dados no Supabase.');
+    } finally {
+      setIsSavingCloud(false);
+      setTimeout(() => {
+        setCloudSaveStatus('idle');
+        setCloudSaveMsg(null);
+      }, 4000);
+    }
   };
 
   // Seed de cadastros (30 candidatos com escolas, 10 empresas, 2 seguradoras, 6 escolas, 10 contratos de parceria)
@@ -411,12 +469,32 @@ export default function App() {
       {/* 1. Desktop Application Header com Botões de Navegação ao lado da logo */}
       <DesktopHeader
         onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
-        onOpenBackup={() => setIsBackupModalOpen(true)}
+        onSaveToCloud={handleSaveToCloud}
+        isSavingCloud={isSavingCloud}
+        cloudSaveStatus={cloudSaveStatus}
         activeModuleTitle={getActiveTitle()}
         activeTab={activeTab}
         onSelectTab={(tab) => setActiveTab(tab)}
         onLock={() => setIsUnlocked(false)}
       />
+
+      {/* Cloud Notification Toast */}
+      {cloudSaveMsg && (
+        <div className="fixed top-20 right-6 z-50 animate-fadeIn">
+          <div className={`px-4 py-3 rounded-2xl border shadow-2xl flex items-center gap-3 text-xs font-semibold backdrop-blur-md ${
+            cloudSaveStatus === 'success'
+              ? 'bg-zinc-950/95 border-emerald-500/80 text-emerald-300 shadow-[0_0_25px_rgba(16,185,129,0.35)]'
+              : 'bg-zinc-950/95 border-red-500/80 text-red-300 shadow-[0_0_25px_rgba(239,68,68,0.35)]'
+          }`}>
+            {cloudSaveStatus === 'success' ? (
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            ) : (
+              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+            )}
+            <span className="max-w-xs">{cloudSaveMsg}</span>
+          </div>
+        </div>
+      )}
 
       {/* 2. Main Workspace Window content area */}
       <main className="flex-1 flex flex-col overflow-hidden relative bg-black">
@@ -460,11 +538,14 @@ export default function App() {
         )}
       </main>
 
-      {/* 3. Tela de Bloqueio por Senha de 6 dígitos */}
+      {/* 3. Tela de Bloqueio por Senha de 6 dígitos com sincronização da Nuvem */}
       {!isUnlocked && (
         <SystemLockScreen
           currentPassword={systemPassword}
-          onUnlock={() => setIsUnlocked(true)}
+          onUnlock={() => {
+            reloadAllLocalData();
+            setIsUnlocked(true);
+          }}
           onUpdatePassword={handleUpdatePassword}
         />
       )}
@@ -473,12 +554,6 @@ export default function App() {
       <DownloadModal
         isOpen={isDownloadModalOpen}
         onClose={() => setIsDownloadModalOpen(false)}
-      />
-
-      {/* 5. Backup / Import / Export Modal */}
-      <BackupModal
-        isOpen={isBackupModalOpen}
-        onClose={() => setIsBackupModalOpen(false)}
       />
     </div>
   );

@@ -2,12 +2,14 @@ import React from 'react';
 import { HunterLogo } from './HunterLogo';
 import { GlowButton } from './GlowButton';
 import { TabId } from '../types/hunter';
-import { Crosshair, Building2, UserCheck, GraduationCap, Database } from 'lucide-react';
+import { Crosshair, Building2, UserCheck, GraduationCap, CloudUpload, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppButton';
 
 interface DesktopHeaderProps {
   onOpenDownloadModal?: () => void;
-  onOpenBackup?: () => void;
+  onSaveToCloud?: () => void;
+  isSavingCloud?: boolean;
+  cloudSaveStatus?: 'idle' | 'success' | 'error';
   activeModuleTitle?: string;
   activeTab: TabId;
   onSelectTab: (tab: TabId) => void;
@@ -16,7 +18,9 @@ interface DesktopHeaderProps {
 
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onOpenDownloadModal,
-  onOpenBackup,
+  onSaveToCloud,
+  isSavingCloud = false,
+  cloudSaveStatus = 'idle',
   activeModuleTitle,
   activeTab,
   onSelectTab,
@@ -49,7 +53,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           </div>
         </div>
 
-        {/* Botões: Hunter, Empresas, Estagiários, Escolas, Backup e Suporte ao lado da logo */}
+        {/* Botões: Hunter, Empresas, Estagiários, Escolas e Suporte ao lado da logo */}
         <nav className="flex items-center gap-2 ml-2">
           <GlowButton
             active={activeTab === 'hunter'}
@@ -91,16 +95,6 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             Escolas
           </GlowButton>
 
-          {/* Botão Backup */}
-          <GlowButton
-            onClick={() => onOpenBackup?.()}
-            icon={<Database className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />}
-            id="btn-nav-backup"
-            className="py-2 px-4 text-xs"
-          >
-            Backup
-          </GlowButton>
-
           {/* Botão Suporte */}
           <GlowButton
             onClick={handleOpenSuporte}
@@ -113,8 +107,42 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
         </nav>
       </div>
 
-      {/* Right section: System Status */}
-      <div className="flex items-center gap-4">
+      {/* Right section: Botão Salvar Nuvem direto no Supabase */}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={onSaveToCloud}
+          disabled={isSavingCloud}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-extrabold transition-all cursor-pointer shadow-md disabled:opacity-60 ${
+            cloudSaveStatus === 'success'
+              ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.35)]'
+              : cloudSaveStatus === 'error'
+              ? 'bg-red-500/20 border-red-400 text-red-300 shadow-[0_0_15px_rgba(239,68,68,0.35)]'
+              : 'bg-zinc-900/90 border-[#3ECF8E]/60 text-[#3ECF8E] hover:border-[#3ECF8E] hover:bg-[#3ECF8E]/15 hover:text-white shadow-[0_0_14px_rgba(62,207,142,0.2)]'
+          }`}
+          title="Salvar alterações no banco de dados Supabase"
+        >
+          {isSavingCloud ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin text-[#3ECF8E]" />
+              <span>Salvando Nuvem...</span>
+            </>
+          ) : cloudSaveStatus === 'success' ? (
+            <>
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>Salvo na Nuvem!</span>
+            </>
+          ) : cloudSaveStatus === 'error' ? (
+            <>
+              <AlertCircle className="w-4 h-4 text-red-400" />
+              <span>Erro ao Salvar</span>
+            </>
+          ) : (
+            <>
+              <CloudUpload className="w-4 h-4 text-[#3ECF8E]" />
+              <span>Salvar Nuvem</span>
+            </>
+          )}
+        </button>
       </div>
     </header>
   );
