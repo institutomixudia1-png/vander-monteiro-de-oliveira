@@ -539,7 +539,7 @@ export default function App() {
 
       {/* 2. Main Workspace Window content area */}
       <main className="flex-1 flex flex-col overflow-hidden relative bg-black">
-        <HunterWatermark size={380} opacity="opacity-[0.18]" />
+        {activeTab !== 'hunter' && <HunterWatermark size={380} opacity="opacity-[0.18]" />}
         {activeTab === 'hunter' && (
           <HunterView
             onNavigate={(tab) => setActiveTab(tab)}

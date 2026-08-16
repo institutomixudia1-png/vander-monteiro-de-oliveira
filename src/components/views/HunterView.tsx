@@ -973,27 +973,26 @@ export const HunterView: React.FC<HunterViewProps> = ({
       {/* Imagem de Fundo em Formato Tela Cheia (Sem logomarcas ou textos) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <img
-          src={adminOfficeFullscreenBg}
+          src={adminOfficeFullscreenBg || '/admin_office_fullscreen_bg.jpg'}
           alt="Painel Administrativo"
           referrerPolicy="no-referrer"
           onError={(e) => {
             const target = e.currentTarget;
-            if (!target.src.includes('/admin_office_fullscreen_bg.jpg')) {
+            if (!target.src.includes('admin_office_fullscreen_bg')) {
               target.src = '/admin_office_fullscreen_bg.jpg';
             }
           }}
-          className={`w-full h-full object-cover object-center filter contrast-105 -scale-x-100 transition-all duration-500 ease-out ${
-            activeWorkspaceSection !== 'none' ? 'brightness-50 contrast-110 opacity-75' : 'brightness-95 opacity-100'
+          className={`w-full h-full object-cover object-center filter contrast-105 -scale-x-100 transition-all duration-300 ease-out ${
+            activeWorkspaceSection !== 'none' ? 'brightness-75 opacity-90' : 'brightness-95 opacity-100'
           }`}
         />
-        {/* Camada elegante de escurecimento suave quando qualquer caixa da área de trabalho estiver aberta */}
+        {/* Camada suave e sutil de escurecimento para manter a imagem do escritório visível ao fundo */}
         {activeWorkspaceSection !== 'none' && (
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[1.5px] transition-all duration-500 animate-fadeIn" />
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px] transition-all duration-300 animate-fadeIn pointer-events-none" />
         )}
-        {/* Camadas sutis de gradiente para garantir contraste, elegância e profundidade */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/35 to-black/15 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none" />
-        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black to-transparent pointer-events-none" />
+        {/* Vinheta suave para garantir legibilidade dos botões à esquerda */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/30 pointer-events-none" />
       </div>
 
       {/* Coluna da Esquerda: Painel Administrativo com os Botões sobre fundo escuro translúcido com desfoque */}
