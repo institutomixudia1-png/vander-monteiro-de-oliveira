@@ -14,7 +14,7 @@ import { EstagiariosView } from './components/views/EstagiariosView';
 import { EscolasView } from './components/views/EscolasView';
 import { HunterWatermark } from './components/HunterWatermark';
 import { DEFAULT_EMPRESAS, DEFAULT_ESTAGIARIOS, DEFAULT_ESCOLAS, DEFAULT_SEGURADORAS, DEFAULT_CONTRATOS } from './data/sampleData';
-import { syncAllToSupabase } from './lib/supabase';
+import { syncAllToSupabase, triggerAutoSaveToCloud, CloudSyncStatus } from './lib/supabase';
 import { CheckCircle2, AlertTriangle } from 'lucide-react';
 
 const STORAGE_KEYS = {
@@ -32,6 +32,30 @@ export default function App() {
   const [cloudSaveStatus, setCloudSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [cloudSaveMsg, setCloudSaveMsg] = useState<string | null>(null);
 
+  // Escuta eventos de sincronização automática na nuvem
+  useEffect(() => {
+    const handleCloudSyncEvent = (e: any) => {
+      const detail = e.detail;
+      if (!detail) return;
+      if (detail.status === 'saving') {
+        setIsSavingCloud(true);
+      } else if (detail.status === 'saved') {
+        setIsSavingCloud(false);
+        setCloudSaveStatus('success');
+      } else if (detail.status === 'error') {
+        setIsSavingCloud(false);
+        setCloudSaveStatus('error');
+        setCloudSaveMsg(detail.message || 'Erro ao sincronizar na nuvem.');
+      } else if (detail.status === 'idle') {
+        setIsSavingCloud(false);
+        setCloudSaveStatus('idle');
+      }
+    };
+
+    window.addEventListener('hunter_cloud_sync_state', handleCloudSyncEvent);
+    return () => window.removeEventListener('hunter_cloud_sync_state', handleCloudSyncEvent);
+  }, []);
+
   // Estado para Senha de Acesso ao Sistema
   const [systemPassword, setSystemPassword] = useState<string>(() => {
     try {
@@ -48,6 +72,7 @@ export default function App() {
   const handleUpdatePassword = (newPass: string) => {
     setSystemPassword(newPass);
     localStorage.setItem(STORAGE_KEY_SYSTEM_PASSWORD, newPass);
+    triggerAutoSaveToCloud();
   };
 
   // Recarrega todos os dados do localStorage (usado após restauração da nuvem)
@@ -164,18 +189,34 @@ export default function App() {
     }
   });
 
-  // Save to localStorage when lists change
+  // Salva no localStorage e dispara auto-save na nuvem quando as listas mudam
+  const isLoadedRef = React.useRef(false);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.EMPRESAS, JSON.stringify(empresas));
+    if (isLoadedRef.current) {
+      triggerAutoSaveToCloud();
+    }
   }, [empresas]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.ESTAGIARIOS, JSON.stringify(estagiarios));
+    if (isLoadedRef.current) {
+      triggerAutoSaveToCloud();
+    }
   }, [estagiarios]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.ESCOLAS, JSON.stringify(escolas));
+    if (isLoadedRef.current) {
+      triggerAutoSaveToCloud();
+    }
   }, [escolas]);
+
+  useEffect(() => {
+    // Marca como carregado após o primeiro render
+    isLoadedRef.current = true;
+  }, []);
 
   // Handle adding new items
   const handleAddEmpresa = (novo: Omit<Empresa, 'id' | 'dataCadastro'>) => {

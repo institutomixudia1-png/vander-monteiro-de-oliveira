@@ -265,3 +265,54 @@ export async function restoreFromSupabase(client = supabase): Promise<{ success:
     };
   }
 }
+
+let autoSaveTimeout: any = null;
+let isAutoSaving = false;
+
+export type CloudSyncStatus = 'idle' | 'saving' | 'saved' | 'error';
+
+export function notifyCloudSyncStatus(status: CloudSyncStatus, message?: string) {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(
+      new CustomEvent('hunter_cloud_sync_state', {
+        detail: { status, message, timestamp: new Date().toISOString() },
+      })
+    );
+  }
+}
+
+/**
+ * Dispara o salvamento automático com debounce de 1.2 segundos
+ * Salva na nuvem sempre que algo for modificado no sistema
+ */
+export function triggerAutoSaveToCloud(delayMs = 1200) {
+  if (typeof window === 'undefined') return;
+
+  if (autoSaveTimeout) {
+    clearTimeout(autoSaveTimeout);
+  }
+
+  notifyCloudSyncStatus('saving', 'Salvando alterações automaticamente na nuvem...');
+
+  autoSaveTimeout = setTimeout(async () => {
+    if (isAutoSaving) return;
+    try {
+      isAutoSaving = true;
+      const res = await syncAllToSupabase();
+      if (res.success) {
+        notifyCloudSyncStatus('saved', 'Alterações salvas na nuvem com sucesso!');
+      } else {
+        notifyCloudSyncStatus('error', res.message);
+      }
+    } catch (err: any) {
+      notifyCloudSyncStatus('error', err.message || 'Erro ao sincronizar na nuvem.');
+    } finally {
+      isAutoSaving = false;
+      // Retorna para o estado normal após 3 segundos
+      setTimeout(() => {
+        notifyCloudSyncStatus('idle');
+      }, 3000);
+    }
+  }, delayMs);
+}
+

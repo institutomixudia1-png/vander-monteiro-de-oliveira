@@ -16,6 +16,7 @@ import { WhatsAppButton } from '../WhatsAppButton';
 import { RedefinirSenhaModal } from '../RedefinirSenhaModal';
 import { MetricasModal } from '../MetricasModal';
 import { DEFAULT_HUNTER_DADOS, DEFAULT_SEGURADORAS, DEFAULT_ESTAGIARIOS, DEFAULT_CONTRATOS } from '../../data/sampleData';
+import { triggerAutoSaveToCloud } from '../../lib/supabase';
 // @ts-ignore
 import adminOfficeFullscreenBg from '../../assets/images/admin_office_fullscreen_bg_1786668610871.jpg';
 
@@ -206,9 +207,43 @@ export const HunterView: React.FC<HunterViewProps> = ({
     }
   });
 
+  const isHunterLoadedRef = React.useRef(false);
+
+  useEffect(() => {
+    if (hunterDados) {
+      localStorage.setItem(STORAGE_KEY_HUNTER_DADOS, JSON.stringify(hunterDados));
+      if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
+    }
+  }, [hunterDados]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_SEGURADORAS, JSON.stringify(seguradoras));
+    if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
+  }, [seguradoras]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_CONTRATOS, JSON.stringify(contratos));
+    if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
+  }, [contratos]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_TCES, JSON.stringify(tces));
+    if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
+  }, [tces]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_RESCISOES, JSON.stringify(rescisoes));
+    if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
+  }, [rescisoes]);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_FOLHAS, JSON.stringify(folhasPagamento));
+    if (isHunterLoadedRef.current) triggerAutoSaveToCloud();
   }, [folhasPagamento]);
+
+  useEffect(() => {
+    isHunterLoadedRef.current = true;
+  }, []);
 
   // Listener para recarregar todos os dados após restauração do Supabase
   useEffect(() => {
