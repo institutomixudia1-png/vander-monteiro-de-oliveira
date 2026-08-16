@@ -841,12 +841,12 @@ export const MetricasModal: React.FC<MetricasModalProps> = ({
   }, [activeTces]);
 
   return (
-    <div className={embedded ? "w-full max-w-5xl mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 animate-fadeIn text-left py-2" : "fixed inset-0 z-[99999] w-screen h-screen bg-black/80 backdrop-blur-md flex flex-col p-4 md:p-8 overflow-y-auto select-none animate-fadeIn"}>
-      <div className={`w-full mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 ${embedded ? 'bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl p-4 md:p-6 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)]' : 'max-w-5xl'}`}>
+    <div className={embedded ? "w-full max-w-5xl mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 animate-fadeIn text-left py-2" : "fixed inset-0 z-[99999] w-screen h-screen bg-black/60 backdrop-blur-md flex flex-col p-4 md:p-8 overflow-y-auto select-none animate-fadeIn"}>
+      <div className={`w-full mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 ${embedded ? 'bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl p-4 md:p-6 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)]' : 'max-w-5xl'}`}>
         <HunterWatermark size={320} opacity="opacity-[0.08]" />
 
         {/* Header Modal */}
-        <div className="flex items-center justify-between border-b border-zinc-700/70 pb-4 shrink-0 relative z-10">
+        <div className="flex items-center justify-between border-b border-zinc-700/60 pb-4 shrink-0 relative z-10">
           <div className="flex items-center gap-3.5">
             <HunterLogo size={42} glow={true} />
             <div>
@@ -854,7 +854,7 @@ export const MetricasModal: React.FC<MetricasModalProps> = ({
                 <PieChartIcon className="w-6 h-6 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />
                 <span className="text-gold-gradient-bright">Dashboard Anual</span>
               </h3>
-              <p className="text-xs md:text-sm text-zinc-400 mt-0.5">
+              <p className="text-xs md:text-sm text-zinc-300 mt-0.5">
                 Demonstrativo financeiro de faturamento e distribuição de estagiários por cidade
               </p>
             </div>
@@ -874,7 +874,7 @@ export const MetricasModal: React.FC<MetricasModalProps> = ({
         <div className="overflow-y-auto flex-1 relative z-10 pr-1">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
             {/* DASHBOARD 1: Linha do Tempo - TCEs x Rescisões */}
-            <div className="bg-zinc-900 p-2 rounded-xl flex flex-col justify-between gap-1 shadow-xl">
+            <div className="bg-zinc-900/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-xl flex flex-col justify-between gap-1 shadow-xl">
               <div>
                 <div className="pb-1 mb-1">
                   <div className="flex items-center gap-1.5">

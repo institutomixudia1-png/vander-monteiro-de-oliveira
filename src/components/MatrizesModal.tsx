@@ -201,19 +201,19 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
   };
 
   return (
-    <div className={embedded ? "w-full max-w-6xl mx-auto my-auto animate-fadeIn text-left py-2 flex flex-col flex-1" : "fixed inset-0 z-[500] bg-black/80 backdrop-blur-md w-screen h-screen flex flex-col justify-center items-center p-0 sm:p-3 animate-fadeIn text-left overflow-hidden"}>
-      <div className={`bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full flex flex-col overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] ${embedded ? 'max-h-[85vh] my-auto' : 'h-full max-w-6xl'}`}>
+    <div className={embedded ? "w-full max-w-6xl mx-auto my-auto animate-fadeIn text-left py-2 flex flex-col flex-1" : "fixed inset-0 z-[500] bg-black/60 backdrop-blur-md w-screen h-screen flex flex-col justify-center items-center p-0 sm:p-3 animate-fadeIn text-left overflow-hidden"}>
+      <div className={`bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full flex flex-col overflow-hidden relative shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] ${embedded ? 'max-h-[85vh] my-auto' : 'h-full max-w-6xl'}`}>
         <HunterWatermark size={300} opacity="opacity-[0.08]" />
 
         {/* HEADER DO MODAL DE MATRIZES */}
-        <div className="flex items-center justify-between border-b border-zinc-700/70 p-4 sm:p-5 shrink-0 relative z-20 bg-zinc-900/60 backdrop-blur-md">
+        <div className="flex items-center justify-between border-b border-zinc-700/60 p-4 sm:p-5 shrink-0 relative z-20 bg-zinc-900/50 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <HunterPDFLogo height={38} />
             <div>
               <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
                 Matrizes de Documentos <span className="text-amber-400 text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30">Modelos Mestre</span>
               </h2>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-300">
                 Edite a estrutura física, cláusulas e textos padrão que não são preenchidos pelo sistema.
               </p>
             </div>
@@ -237,8 +237,8 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
         )}
 
         {/* PARTE DE CIMA DA TELA: OS BOTÕES LADO A LADO */}
-        <div className="p-4 bg-zinc-900 border-b border-zinc-800 shrink-0 relative z-20">
-          <div className="text-xs text-zinc-400 font-semibold mb-2 uppercase tracking-wider text-center sm:text-left">
+        <div className="p-4 bg-zinc-900/50 border-b border-zinc-700/50 shrink-0 relative z-20">
+          <div className="text-xs text-zinc-300 font-semibold mb-2 uppercase tracking-wider text-center sm:text-left">
             Selecione a Matriz para alterar o modelo:
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 max-w-3xl mx-auto sm:mx-0">
@@ -248,7 +248,7 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all duration-200 border cursor-pointer text-[#FFD700] ${
                 activeTab === 'tce'
                   ? 'bg-amber-500/25 border-amber-400 shadow-[0_0_20px_rgba(255,215,0,0.35)] scale-[1.02]'
-                  : 'bg-zinc-900 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
+                  : 'bg-zinc-900/60 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
               }`}
             >
               <FileCheck className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_4px_rgba(255,215,0,0.6)]" />
@@ -261,7 +261,7 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all duration-200 border cursor-pointer text-[#FFD700] ${
                 activeTab === 'rescisao'
                   ? 'bg-amber-500/25 border-amber-400 shadow-[0_0_20px_rgba(255,215,0,0.35)] scale-[1.02]'
-                  : 'bg-zinc-900 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
+                  : 'bg-zinc-900/60 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
               }`}
             >
               <FileX className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_4px_rgba(255,215,0,0.6)]" />
@@ -274,7 +274,7 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all duration-200 border cursor-pointer text-[#FFD700] ${
                 activeTab === 'convenio'
                   ? 'bg-amber-500/25 border-amber-400 shadow-[0_0_20px_rgba(255,215,0,0.35)] scale-[1.02]'
-                  : 'bg-zinc-900 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
+                  : 'bg-zinc-900/60 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
               }`}
             >
               <FileText className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_4px_rgba(255,215,0,0.6)]" />
@@ -287,7 +287,7 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
               className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-extrabold text-xs sm:text-sm transition-all duration-200 border cursor-pointer text-[#FFD700] ${
                 activeTab === 'relatorio'
                   ? 'bg-amber-500/25 border-amber-400 shadow-[0_0_20px_rgba(255,215,0,0.35)] scale-[1.02]'
-                  : 'bg-zinc-900 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
+                  : 'bg-zinc-900/60 border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10'
               }`}
             >
               <Edit3 className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_4px_rgba(255,215,0,0.6)]" />
@@ -297,7 +297,7 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
         </div>
 
         {/* PARTE DE BAIXO DA TELA: O MODELO DO DOCUMENTO ONDE É POSSÍVEL ALTERAR O DOCUMENTO */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 relative z-10 bg-zinc-950">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 relative z-10 bg-zinc-900/40">
           
           {/* ================= TELA DA MATRIZ DO TCE ================= */}
           {activeTab === 'tce' && (
