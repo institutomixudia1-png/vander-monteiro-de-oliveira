@@ -841,7 +841,7 @@ export const MetricasModal: React.FC<MetricasModalProps> = ({
   }, [activeTces]);
 
   return (
-    <div className={embedded ? "w-full max-w-5xl mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 animate-fadeIn text-left py-2" : "fixed inset-0 z-[99999] w-screen h-screen bg-black flex flex-col p-4 md:p-8 overflow-y-auto select-none animate-fadeIn"}>
+    <div className={embedded ? "w-full max-w-5xl mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 animate-fadeIn text-left py-2" : "fixed inset-0 z-[99999] w-screen h-screen bg-black/80 backdrop-blur-md flex flex-col p-4 md:p-8 overflow-y-auto select-none animate-fadeIn"}>
       <div className={`w-full mx-auto my-auto flex flex-col flex-1 relative z-10 space-y-4 ${embedded ? 'bg-zinc-950/95 backdrop-blur-xl border border-amber-500/50 rounded-2xl p-4 md:p-6 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)]' : 'max-w-5xl'}`}>
         <HunterWatermark size={320} opacity="opacity-[0.08]" />
 

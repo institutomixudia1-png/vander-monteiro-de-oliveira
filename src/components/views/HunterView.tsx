@@ -976,18 +976,24 @@ export const HunterView: React.FC<HunterViewProps> = ({
           src={adminOfficeFullscreenBg}
           alt="Painel Administrativo"
           referrerPolicy="no-referrer"
-          className={`w-full h-full object-cover object-center filter contrast-105 -scale-x-100 ${
-            activeWorkspaceSection !== 'none' ? 'brightness-[0.12] opacity-40' : 'brightness-95'
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (!target.src.includes('/admin_office_fullscreen_bg.jpg')) {
+              target.src = '/admin_office_fullscreen_bg.jpg';
+            }
+          }}
+          className={`w-full h-full object-cover object-center filter contrast-105 -scale-x-100 transition-all duration-500 ease-out ${
+            activeWorkspaceSection !== 'none' ? 'brightness-50 contrast-110 opacity-75' : 'brightness-95 opacity-100'
           }`}
         />
-        {/* Camada total de escurecimento quando qualquer caixa da área de trabalho estiver aberta */}
+        {/* Camada elegante de escurecimento suave quando qualquer caixa da área de trabalho estiver aberta */}
         {activeWorkspaceSection !== 'none' && (
-          <div className="absolute inset-0 bg-black/85" />
+          <div className="absolute inset-0 bg-black/45 backdrop-blur-[1.5px] transition-all duration-500 animate-fadeIn" />
         )}
         {/* Camadas sutis de gradiente para garantir contraste, elegância e profundidade */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/40 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/75" />
-        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/35 to-black/15 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70 pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black to-transparent pointer-events-none" />
       </div>
 
       {/* Coluna da Esquerda: Painel Administrativo com os Botões sobre fundo escuro translúcido com desfoque */}
