@@ -284,7 +284,7 @@ export const EstagiariosView: React.FC<EstagiariosViewProps> = ({
   };
 
   const mainContent = (
-    <div className={`bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-5 md:p-7 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative ${embedded ? 'max-h-[85vh] my-auto' : 'max-w-6xl mx-auto'}`}>
+    <div className={`bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-5 md:p-7 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative ${embedded ? 'max-h-[85vh] my-auto' : 'max-w-6xl mx-auto'}`}>
       <HunterWatermark size={280} opacity="opacity-[0.08]" />
 
       {/* Header */}

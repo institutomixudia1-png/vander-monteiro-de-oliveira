@@ -1224,7 +1224,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 1. Área de Trabalho: Dados Cadastrais da Hunter */}
         {activeWorkspaceSection === 'dados' && (
           <div className="w-full max-w-4xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.10]" />
               
               {/* Cabeçalho da Caixa na Área de Trabalho */}
@@ -1528,7 +1528,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 2. Área de Trabalho: Seguradoras */}
         {activeWorkspaceSection === 'seguradoras' && (
           <div className="w-full max-w-4xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.10]" />
               
               <div className="flex items-center justify-between border-b border-zinc-700/60 pb-4 mb-5 shrink-0 relative z-10">
@@ -1708,7 +1708,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 3. Área de Trabalho: Clientes (Contratos de Parceria) */}
         {activeWorkspaceSection === 'clientes' && (
           <div className="w-full max-w-5xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.10]" />
               
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-700/60 pb-4 mb-5 shrink-0 relative z-10">
@@ -1861,7 +1861,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 4. Área de Trabalho: TCE (Termo de Compromisso de Estágio) */}
         {activeWorkspaceSection === 'tce' && (
           <div className="w-full max-w-3xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.10]" />
               
               <div className="flex items-center justify-between border-b border-zinc-700/60 pb-4 mb-5 shrink-0 relative z-10">
@@ -2135,7 +2135,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 6. Área de Trabalho: Relatório Semestral de Atividades */}
         {activeWorkspaceSection === 'relatorio' && (
           <div className="w-full max-w-5xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/60 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-6 md:p-8 shadow-[0_12px_45px_rgba(0,0,0,0.5),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.10]" />
               
               <div className="flex items-center justify-between border-b border-zinc-700/60 pb-4 mb-4 shrink-0 relative z-10">
