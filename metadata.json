@@ -1,0 +1,6 @@
+{
+  "name": "Hunter Desktop",
+  "description": "Aplicativo Hunter Desktop com interface preta, botões dourados com brilho e gestão sem cadastros iniciais.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
