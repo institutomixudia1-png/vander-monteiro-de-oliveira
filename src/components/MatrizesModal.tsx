@@ -202,11 +202,11 @@ export const MatrizesModal: React.FC<MatrizesModalProps> = ({ isOpen, onClose, e
 
   return (
     <div className={embedded ? "w-full max-w-6xl mx-auto my-auto animate-fadeIn text-left py-2 flex flex-col flex-1" : "fixed inset-0 z-[500] bg-black/80 backdrop-blur-md w-screen h-screen flex flex-col justify-center items-center p-0 sm:p-3 animate-fadeIn text-left overflow-hidden"}>
-      <div className={`bg-zinc-950/95 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full flex flex-col overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] ${embedded ? 'max-h-[85vh] my-auto' : 'h-full max-w-6xl'}`}>
+      <div className={`bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full flex flex-col overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] ${embedded ? 'max-h-[85vh] my-auto' : 'h-full max-w-6xl'}`}>
         <HunterWatermark size={300} opacity="opacity-[0.08]" />
 
         {/* HEADER DO MODAL DE MATRIZES */}
-        <div className="flex items-center justify-between border-b border-zinc-800 p-4 sm:p-5 shrink-0 relative z-20 bg-zinc-950">
+        <div className="flex items-center justify-between border-b border-zinc-700/70 p-4 sm:p-5 shrink-0 relative z-20 bg-zinc-900/60 backdrop-blur-md">
           <div className="flex items-center gap-3">
             <HunterPDFLogo height={38} />
             <div>

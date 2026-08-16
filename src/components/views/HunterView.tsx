@@ -1216,11 +1216,11 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 1. Área de Trabalho: Dados Cadastrais da Hunter */}
         {activeWorkspaceSection === 'dados' && (
           <div className="w-full max-w-4xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.12]" />
               
               {/* Cabeçalho da Caixa na Área de Trabalho */}
-              <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4 mb-5 shrink-0 relative z-10">
+              <div className="flex items-center justify-between border-b border-zinc-750 pb-4 mb-5 shrink-0 relative z-10">
                 <div className="flex items-center gap-3">
                   <HunterLogo size={38} glow={true} />
                   <div>
@@ -1265,7 +1265,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                     </div>
 
                     {/* Card Segurança - Redefinir Senha */}
-                    <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-amber-500/40 flex items-center justify-between gap-3 shadow-[0_0_15px_rgba(212,175,55,0.12)]">
+                    <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-amber-500/40 flex items-center justify-between gap-3 shadow-[0_0_15px_rgba(212,175,55,0.12)]">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0">
                           <KeyRound className="w-4 h-4 text-[#FFD700]" />
@@ -1286,40 +1286,40 @@ export const HunterView: React.FC<HunterViewProps> = ({
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-sm">
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Nome Fantasia</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Nome Fantasia</span>
                         <span className="font-bold text-base text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.nomeFantasia}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Razão Social</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Razão Social</span>
                         <span className="font-semibold text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.razaoSocial || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">CNPJ</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">CNPJ</span>
                         <span className="font-mono text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.cnpj || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Telefone (Fone)</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Telefone (Fone)</span>
                         <span className="font-mono text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.fone || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Endereço & Bairro</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Endereço & Bairro</span>
                         <span className="text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.endereco || '—'} — {hunterDados.bairro || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Cidade</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Cidade</span>
                         <span className="text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.cidade || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">CEP</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">CEP</span>
                         <span className="font-mono text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.cep || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">Responsável</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">Responsável</span>
                         <span className="font-medium text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.responsavel || '—'}</span>
                       </div>
-                      <div className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 sm:col-span-2">
-                        <span className="text-xs font-semibold text-zinc-500 uppercase block">E-mail</span>
+                      <div className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60 sm:col-span-2">
+                        <span className="text-xs font-semibold text-zinc-400 uppercase block">E-mail</span>
                         <span className="text-[#39FF14]" style={{ color: '#39FF14' }}>{hunterDados.email || '—'}</span>
                       </div>
                     </div>
@@ -1349,7 +1349,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setNomeFantasia(e.target.value)}
                           placeholder="Ex: Hunter Desktop Brasil"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                       <div>
@@ -1363,7 +1363,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setRazaoSocial(e.target.value)}
                           placeholder="Ex: Hunter Serviços de Recrutamento Ltda"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                     </div>
@@ -1380,7 +1380,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setEndereco(e.target.value)}
                           placeholder="Ex: Av. Paulista, 1000"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                       <div>
@@ -1394,7 +1394,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setBairro(e.target.value)}
                           placeholder="Ex: Bela Vista"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                     </div>
@@ -1411,7 +1411,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setCidade(e.target.value)}
                           placeholder="Ex: São Paulo - SP"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                       <div>
@@ -1425,7 +1425,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setCep(e.target.value)}
                           placeholder="Ex: 01310-100"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
                         />
                       </div>
                     </div>
@@ -1442,7 +1442,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setFone(e.target.value)}
                           placeholder="Ex: (11) 3000-0000"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
                         />
                       </div>
                       <div>
@@ -1456,7 +1456,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setCnpj(e.target.value)}
                           placeholder="Ex: 12.345.678/0001-90"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400 font-mono"
                         />
                       </div>
                     </div>
@@ -1473,7 +1473,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setResponsavel(e.target.value)}
                           placeholder="Ex: Diretoria Geral"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                       <div>
@@ -1487,12 +1487,12 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Ex: contato@hunter.com.br"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
+                          className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-lg px-3 py-2.5 text-sm text-[#39FF14] focus:outline-none focus:border-amber-400"
                         />
                       </div>
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-4 border-t border-zinc-800">
+                    <div className="flex justify-end gap-3 pt-4 border-t border-zinc-700/70">
                       <button
                         type="button"
                         onClick={() => {
@@ -1520,10 +1520,10 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 2. Área de Trabalho: Seguradoras */}
         {activeWorkspaceSection === 'seguradoras' && (
           <div className="w-full max-w-4xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.12]" />
               
-              <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4 mb-5 shrink-0 relative z-10">
+              <div className="flex items-center justify-between border-b border-zinc-700/70 pb-4 mb-5 shrink-0 relative z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_rgba(251,191,36,0.25)]">
                     <Shield className="w-5 h-5 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -1548,7 +1548,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
 
               <div className="overflow-y-auto flex-1 relative z-10 pr-1 space-y-5">
                 {/* Contador de vagas (máx 5) */}
-                <div className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800">
+                <div className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60">
                   <span className="text-xs font-semibold text-zinc-300">
                     Seguradoras Cadastradas:
                   </span>
@@ -1559,7 +1559,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
 
                 {/* Formulário de Cadastro (se < 5) */}
                 {seguradoras.length < 5 ? (
-                  <form onSubmit={handleAddSeguradora} className="space-y-4 p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+                  <form onSubmit={handleAddSeguradora} className="space-y-4 p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/70">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                       <div>
                         <label className="block text-xs font-semibold text-zinc-300 mb-1">
@@ -1572,7 +1572,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setSegNome(e.target.value)}
                           placeholder="Ex: Porto Seguro Cia de Seguros"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
+                          className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
                         />
                       </div>
                       <div>
@@ -1586,7 +1586,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           onChange={(e) => setSegApolice(e.target.value)}
                           placeholder="Ex: 01.0698.000456-0"
                           style={{ color: '#39FF14' }}
-                          className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
+                          className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
                         />
                       </div>
                     </div>
@@ -1600,7 +1600,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         onChange={(e) => setSegFone(e.target.value)}
                         placeholder="Ex: (11) 98765-4321 ou (11) 3000-0000"
                         style={{ color: '#39FF14' }}
-                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
+                        className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
                       />
                     </div>
                     <div>
@@ -1613,7 +1613,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         onChange={(e) => setSegObservacao(e.target.value)}
                         placeholder="Ex: Cobertura contra acidentes pessoais para estagiários"
                         style={{ color: '#39FF14' }}
-                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
+                        className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-lg px-3 py-2 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
                       />
                     </div>
                     <div className="flex justify-end pt-1">
@@ -1638,14 +1638,14 @@ export const HunterView: React.FC<HunterViewProps> = ({
                     Seguradoras Conveniadas
                   </div>
                   {seguradoras.length === 0 ? (
-                    <div className="py-8 text-center text-zinc-500 text-xs bg-zinc-900/40 rounded-xl border border-zinc-800">
+                    <div className="py-8 text-center text-zinc-400 text-xs bg-zinc-800/40 rounded-xl border border-zinc-700/60">
                       Nenhuma seguradora cadastrada ainda. Utilize o formulário acima para cadastrar até 5 seguradoras.
                     </div>
                   ) : (
                     seguradoras.map((seg, idx) => (
                       <div
                         key={seg.id}
-                        className="p-3.5 rounded-xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-between gap-4 hover:border-amber-500/40 transition-colors"
+                        className="p-3.5 rounded-xl bg-zinc-800/60 border border-zinc-700/60 flex items-center justify-between gap-4 hover:border-amber-500/40 hover:bg-zinc-800/80 transition-colors"
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -1674,7 +1674,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
 
                         <button
                           onClick={() => handleDeleteSeguradora(seg.id)}
-                          className="p-1.5 rounded-lg bg-zinc-950 border border-zinc-800 text-zinc-400 hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shrink-0"
+                          className="p-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-400 hover:text-red-400 hover:border-red-500/40 transition-colors cursor-pointer shrink-0"
                           title="Excluir seguradora"
                         >
                           <Trash2 className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -1684,7 +1684,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                   )}
                 </div>
 
-                <div className="pt-4 border-t border-zinc-800 flex justify-end">
+                <div className="pt-4 border-t border-zinc-700/70 flex justify-end">
                   <button
                     onClick={() => setActiveWorkspaceSection('none')}
                     className="px-6 py-2 rounded-xl bg-amber-500/15 border border-amber-400/60 text-amber-300 hover:text-white hover:bg-amber-500/30 hover:border-amber-300 text-sm font-bold transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
@@ -1700,10 +1700,10 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 3. Área de Trabalho: Clientes (Contratos de Parceria) */}
         {activeWorkspaceSection === 'clientes' && (
           <div className="w-full max-w-5xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.12]" />
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800/80 pb-4 mb-5 shrink-0 relative z-10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-700/70 pb-4 mb-5 shrink-0 relative z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_rgba(251,191,36,0.25)]">
                     <Users className="w-5 h-5 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -1744,22 +1744,22 @@ export const HunterView: React.FC<HunterViewProps> = ({
                     value={searchEmpresaTerm}
                     onChange={(e) => setSearchEmpresaTerm(e.target.value)}
                     placeholder="Pesquisar por empresa, CNPJ, responsável, cidade ou Nº do contrato..."
-                    className="w-full bg-zinc-900/90 border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/80 transition-colors"
+                    className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/80 transition-colors"
                   />
                 </div>
               </div>
 
               {/* Tabela de Contratos */}
-              <div className="overflow-y-auto flex-1 border border-zinc-800/80 rounded-xl bg-zinc-900/40 relative z-10">
+              <div className="overflow-y-auto flex-1 border border-zinc-700/70 rounded-xl bg-zinc-800/40 relative z-10">
                 {filteredContratos.length === 0 ? (
-                  <div className="p-10 text-center text-zinc-500 text-xs">
-                    <Building2 className="w-8 h-8 text-zinc-600 mx-auto mb-2 opacity-50" />
+                  <div className="p-10 text-center text-zinc-400 text-xs">
+                    <Building2 className="w-8 h-8 text-zinc-500 mx-auto mb-2 opacity-50" />
                     Nenhum contrato de parceria encontrado.
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs text-zinc-300">
-                      <thead className="bg-zinc-900/90 text-[11px] font-bold text-amber-400 uppercase tracking-wider border-b border-zinc-800 sticky top-0 backdrop-blur-md">
+                      <thead className="bg-zinc-800/90 text-[11px] font-bold text-amber-400 uppercase tracking-wider border-b border-zinc-700/80 sticky top-0 backdrop-blur-md">
                         <tr>
                           <th className="p-3">Nº Contrato</th>
                           <th className="p-3">Empresa Cliente</th>
@@ -1768,9 +1768,9 @@ export const HunterView: React.FC<HunterViewProps> = ({
                           <th className="p-3 text-right">Ações</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-zinc-800/60">
+                      <tbody className="divide-y divide-zinc-700/60">
                         {filteredContratos.map((c) => (
-                          <tr key={c.id} className="hover:bg-zinc-900/80 transition-colors">
+                          <tr key={c.id} className="hover:bg-zinc-800/60 transition-colors">
                             <td className="p-3 font-mono font-bold text-amber-300">
                               #{String(c.numero).padStart(3, '0')}
                             </td>
@@ -1803,7 +1803,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={() => setSelectedEmpresaForView(c)}
-                                  className="px-2.5 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs font-semibold transition-all cursor-pointer flex items-center gap-1"
+                                  className="px-2.5 py-1.5 rounded-lg bg-zinc-800 border border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-700 text-xs font-semibold transition-all cursor-pointer flex items-center gap-1"
                                   title="Ver Dados da Empresa"
                                 >
                                   <Building2 className="w-3.5 h-3.5 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -1838,7 +1838,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                 )}
               </div>
 
-              <div className="mt-5 pt-4 border-t border-zinc-800 flex justify-end relative z-10">
+              <div className="mt-5 pt-4 border-t border-zinc-700/70 flex justify-end relative z-10">
                 <button
                   onClick={() => setActiveWorkspaceSection('none')}
                   className="px-6 py-2 rounded-xl bg-amber-500/15 border border-amber-400/60 text-amber-300 hover:text-white hover:bg-amber-500/30 hover:border-amber-300 text-sm font-bold transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
@@ -1853,10 +1853,10 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 4. Área de Trabalho: TCE (Termo de Compromisso de Estágio) */}
         {activeWorkspaceSection === 'tce' && (
           <div className="w-full max-w-3xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.12]" />
               
-              <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4 mb-5 shrink-0 relative z-10">
+              <div className="flex items-center justify-between border-b border-zinc-700/70 pb-4 mb-5 shrink-0 relative z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_rgba(251,191,36,0.25)]">
                     <GraduationCap className="w-5 h-5 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -1882,7 +1882,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
               <div className="overflow-y-auto flex-1 relative z-10 pr-1">
                 <form onSubmit={handleGenerateTCE} className="space-y-4">
                   {/* Opção: Modalidade do Estágio (Não-Obrigatório vs Obrigatório) */}
-                  <div className="bg-zinc-900/90 border border-amber-500/30 rounded-xl p-3.5 space-y-2">
+                  <div className="bg-zinc-800/60 border border-amber-500/30 rounded-xl p-3.5 space-y-2">
                     <label className="block text-xs font-bold text-amber-300 uppercase tracking-wider">
                       Modalidade do Estágio (Lei nº 11.788/08)
                     </label>
@@ -1893,14 +1893,14 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left flex items-center justify-between border cursor-pointer ${
                           tceTipoEstagio === 'nao_obrigatorio'
                             ? 'bg-amber-500/25 border-amber-400 text-[#FFD700] shadow-[0_0_15px_rgba(251,191,36,0.3)]'
-                            : 'bg-zinc-950/80 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                            : 'bg-zinc-800/80 border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600'
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                             tceTipoEstagio === 'nao_obrigatorio'
                               ? 'border-amber-400 bg-amber-400'
-                              : 'border-zinc-600 bg-transparent'
+                              : 'border-zinc-500 bg-transparent'
                           }`}>
                             {tceTipoEstagio === 'nao_obrigatorio' && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
                           </div>
@@ -1917,14 +1917,14 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left flex items-center justify-between border cursor-pointer ${
                           tceTipoEstagio === 'obrigatorio'
                             ? 'bg-amber-500/25 border-amber-400 text-[#FFD700] shadow-[0_0_15px_rgba(251,191,36,0.3)]'
-                            : 'bg-zinc-950/80 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:border-zinc-700'
+                            : 'bg-zinc-800/80 border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-600'
                         }`}
                       >
                         <div className="flex items-center gap-2">
                           <div className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                             tceTipoEstagio === 'obrigatorio'
                               ? 'border-amber-400 bg-amber-400'
-                              : 'border-zinc-600 bg-transparent'
+                              : 'border-zinc-500 bg-transparent'
                           }`}>
                             {tceTipoEstagio === 'obrigatorio' && <div className="w-1.5 h-1.5 rounded-full bg-black" />}
                           </div>
@@ -1950,7 +1950,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         const emp = empresasComContratoAtivo.find((em) => em.id === e.target.value);
                         setSelectedEmpresaForTCE(emp || null);
                       }}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
+                      className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
                     >
                       <option value="">-- Selecione uma Empresa Conveniada --</option>
                       {empresasComContratoAtivo.map((em) => (
@@ -1974,7 +1974,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         const est = estagiarios.find((es) => es.id === e.target.value);
                         setSelectedEstagiarioForTCE(est || null);
                       }}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
+                      className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
                     >
                       <option value="">-- Selecione um Estagiário --</option>
                       {estagiarios.map((est) => (
@@ -1998,7 +1998,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         const seg = seguradoras.find((s) => s.id === e.target.value);
                         setSelectedSeguradoraForTCE(seg || null);
                       }}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
+                      className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#FFD700] focus:outline-none focus:border-amber-400 font-bold"
                     >
                       <option value="">-- Selecione a Seguradora --</option>
                       {seguradoras.map((seg) => (
@@ -2021,7 +2021,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         onChange={(e) => setTceValor(e.target.value)}
                         placeholder="Ex: 800,00"
                         style={{ color: '#39FF14' }}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
+                        className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
                       />
                     </div>
 
@@ -2036,7 +2036,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         onChange={(e) => setTceValorExtenso(e.target.value)}
                         placeholder="Ex: oitocentos reais"
                         style={{ color: '#39FF14' }}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+                        className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400"
                       />
                     </div>
 
@@ -2051,7 +2051,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                         onChange={(e) => setTceDia(e.target.value)}
                         placeholder="Ex: 10"
                         style={{ color: '#39FF14' }}
-                        className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
+                        className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-mono"
                       />
                     </div>
                   </div>
@@ -2059,7 +2059,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                   <div>
                     <label className="block text-xs font-semibold text-zinc-300 mb-1 flex items-center justify-between">
                       <span>Atividades do Estagiário</span>
-                      <span className="text-[10px] text-zinc-500 font-normal">Opcional - deixe vazio para usar o padrão</span>
+                      <span className="text-[10px] text-zinc-400 font-normal">Opcional - deixe vazio para usar o padrão</span>
                     </label>
                     <input
                       type="text"
@@ -2067,7 +2067,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                       onChange={(e) => setTceAtividadesEstagiario(e.target.value)}
                       placeholder="Padrão: ADMINISTRATIVO - AUXILIAR ADMINISTRATIVO / ATENDENTE"
                       style={{ color: '#39FF14' }}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-600 focus:outline-none focus:border-amber-400 font-medium"
+                      className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400 font-medium"
                     />
                   </div>
 
@@ -2082,11 +2082,11 @@ export const HunterView: React.FC<HunterViewProps> = ({
                       onChange={(e) => setTceDataContrato(e.target.value)}
                       placeholder="Ex: 31 de Julho de 2026"
                       style={{ color: '#39FF14' }}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400"
+                      className="w-full bg-zinc-800/80 border border-zinc-700/80 rounded-xl px-3.5 py-2.5 text-sm text-[#39FF14] placeholder-zinc-500 focus:outline-none focus:border-amber-400"
                     />
                   </div>
 
-                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-800">
+                  <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-700/70">
                     <button
                       type="button"
                       onClick={() => setActiveWorkspaceSection('none')}
@@ -2127,10 +2127,10 @@ export const HunterView: React.FC<HunterViewProps> = ({
         {/* 6. Área de Trabalho: Relatório Semestral de Atividades */}
         {activeWorkspaceSection === 'relatorio' && (
           <div className="w-full max-w-5xl mx-auto my-auto animate-fadeIn text-left py-2">
-            <div className="bg-zinc-950/90 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.85),0_0_35px_rgba(212,175,55,0.25)] flex flex-col overflow-hidden relative">
+            <div className="bg-zinc-900/85 backdrop-blur-xl border border-amber-500/50 rounded-2xl w-full p-6 md:p-8 shadow-[0_0_50px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative">
               <HunterWatermark size={240} opacity="opacity-[0.12]" />
               
-              <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4 mb-4 shrink-0 relative z-10">
+              <div className="flex items-center justify-between border-b border-zinc-700/70 pb-4 mb-4 shrink-0 relative z-10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/50 flex items-center justify-center text-amber-300 shrink-0 shadow-[0_0_15px_rgba(251,191,36,0.25)]">
                     <ClipboardList className="w-5 h-5 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -2161,7 +2161,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                   placeholder="Buscar por nome do estagiário, empresa, CPF ou Nº do TCE..."
                   value={searchRelatorioTerm}
                   onChange={(e) => setSearchRelatorioTerm(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/60 transition-all"
+                  className="w-full bg-zinc-800/70 border border-zinc-700/70 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/60 transition-all"
                 />
               </div>
 
@@ -2183,12 +2183,12 @@ export const HunterView: React.FC<HunterViewProps> = ({
 
                   if (list.length === 0) {
                     return (
-                      <div className="p-8 text-center bg-zinc-900/40 rounded-xl border border-zinc-800/80 my-4">
+                      <div className="p-8 text-center bg-zinc-800/40 rounded-xl border border-zinc-700/60 my-4">
                         <GraduationCap className="w-10 h-10 text-amber-400/40 mx-auto mb-2" />
                         <p className="text-sm font-semibold text-zinc-300">
                           Nenhum estagiário com mais de 180 dias de TCE ativo encontrado
                         </p>
-                        <p className="text-xs text-zinc-500 mt-1 max-w-lg mx-auto">
+                        <p className="text-xs text-zinc-400 mt-1 max-w-lg mx-auto">
                           {searchRelatorioTerm
                             ? 'Tente alterar os termos da busca.'
                             : 'De acordo com a Lei 11.788/08, os relatórios de atividades devem ser emitidos a cada 6 meses (180 dias). Nenhum dos TCEs cadastrados possui mais de 180 dias entre a data de início e a data atual.'}
@@ -2198,21 +2198,21 @@ export const HunterView: React.FC<HunterViewProps> = ({
                   }
 
                   return (
-                    <div className="border border-zinc-800/80 rounded-xl overflow-hidden bg-zinc-900/30">
+                    <div className="border border-zinc-700/70 rounded-xl overflow-hidden bg-zinc-800/40">
                       <table className="w-full text-left border-collapse">
                         <thead>
-                          <tr className="bg-zinc-900/80 border-b border-zinc-800 text-[11px] font-bold text-amber-400 uppercase tracking-wider">
+                          <tr className="bg-zinc-800/90 border-b border-zinc-700/80 text-[11px] font-bold text-amber-400 uppercase tracking-wider">
                             <th className="py-3 px-4">Estagiário(a)</th>
                             <th className="py-3 px-4">Empresa Concedente</th>
                             <th className="py-3 px-4">TCE / Tempo</th>
                             <th className="py-3 px-4 text-right">Ação</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-zinc-800/60 text-xs">
+                        <tbody className="divide-y divide-zinc-700/60 text-xs">
                           {list.map((tceItem) => {
                             const diasAtivo = calcularDiasTCEAtivo(tceItem);
                             return (
-                              <tr key={tceItem.id} className="hover:bg-zinc-900/60 transition-colors">
+                              <tr key={tceItem.id} className="hover:bg-zinc-800/60 transition-colors">
                                 <td className="py-3 px-4">
                                   <div className="font-bold text-sm flex items-center gap-2" style={{ color: '#39FF14' }}>
                                     <WhatsAppButton
@@ -2236,7 +2236,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                                 </td>
                                 <td className="py-3 px-4">
                                   <span
-                                    className="font-mono font-bold text-xs bg-black/60 border border-emerald-500/40 px-2.5 py-1 rounded-lg inline-block"
+                                    className="font-mono font-bold text-xs bg-zinc-900/80 border border-emerald-500/40 px-2.5 py-1 rounded-lg inline-block"
                                     style={{ color: '#39FF14' }}
                                   >
                                     Nº {tceItem.numero}
@@ -2248,7 +2248,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                                 <td className="py-3 px-4 text-right">
                                   <button
                                     onClick={() => handleGerarRelatorioAtividades(tceItem)}
-                                    className="px-4 py-1.5 rounded-lg bg-zinc-900 border border-amber-500/60 hover:bg-amber-500/20 font-extrabold text-xs flex items-center gap-1.5 ml-auto transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
+                                    className="px-4 py-1.5 rounded-lg bg-zinc-800 border border-amber-500/60 hover:bg-amber-500/20 font-extrabold text-xs flex items-center gap-1.5 ml-auto transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
                                     style={{ color: '#FFD700' }}
                                   >
                                     <FileText className="w-3.5 h-3.5" style={{ color: '#FFD700' }} />
@@ -2266,8 +2266,8 @@ export const HunterView: React.FC<HunterViewProps> = ({
               </div>
 
               {/* Footer */}
-              <div className="pt-4 mt-4 border-t border-zinc-800 flex items-center justify-between shrink-0 relative z-10">
-                <span className="text-xs text-zinc-500">
+              <div className="pt-4 mt-4 border-t border-zinc-700/70 flex items-center justify-between shrink-0 relative z-10">
+                <span className="text-xs text-zinc-400">
                   Elegíveis (&gt;180 dias):{' '}
                   <strong style={{ color: '#39FF14' }}>
                     {
@@ -2278,7 +2278,7 @@ export const HunterView: React.FC<HunterViewProps> = ({
                 </span>
                 <button
                   onClick={() => setActiveWorkspaceSection('none')}
-                  className="px-5 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs font-bold transition-all cursor-pointer"
+                  className="px-6 py-2 rounded-xl bg-amber-500/15 border border-amber-400/60 text-amber-300 hover:text-white hover:bg-amber-500/30 hover:border-amber-300 text-sm font-bold transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
                 >
                   Fechar
                 </button>
