@@ -545,9 +545,16 @@ export default function App() {
             onNavigate={(tab) => setActiveTab(tab)}
             onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
             empresas={empresas}
+            onAddEmpresa={handleAddEmpresa}
             onDeleteEmpresa={handleDeleteEmpresa}
             onUpdatePassword={handleUpdatePassword}
             estagiarios={estagiarios}
+            onAddEstagiario={handleAddEstagiario}
+            onAddEstagiariosLote={handleAddEstagiariosLote}
+            onDeleteEstagiario={handleDeleteEstagiario}
+            escolas={escolas}
+            onAddEscola={handleAddEscola}
+            onDeleteEscola={handleDeleteEscola}
           />
         )}
 

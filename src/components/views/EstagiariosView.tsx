@@ -24,6 +24,8 @@ import {
 import { GlowButton } from '../GlowButton';
 import { HunterWatermark } from '../HunterWatermark';
 import { WhatsAppButton } from '../WhatsAppButton';
+// @ts-ignore
+import adminOfficeFullscreenBg from '../../assets/images/admin_office_fullscreen_bg_1786668610871.jpg';
 
 interface EstagiariosViewProps {
   estagiarios: Estagiario[];
@@ -31,6 +33,8 @@ interface EstagiariosViewProps {
   onAddEstagiario: (estagiario: Omit<Estagiario, 'id' | 'dataCadastro'>) => void;
   onAddEstagiariosLote?: (estagiarios: Omit<Estagiario, 'id' | 'dataCadastro'>[]) => void;
   onDeleteEstagiario?: (id: string) => void;
+  embedded?: boolean;
+  onClose?: () => void;
 }
 
 export const EstagiariosView: React.FC<EstagiariosViewProps> = ({
@@ -38,7 +42,9 @@ export const EstagiariosView: React.FC<EstagiariosViewProps> = ({
   escolas = [],
   onAddEstagiario,
   onAddEstagiariosLote,
-  onDeleteEstagiario
+  onDeleteEstagiario,
+  embedded = false,
+  onClose
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -277,162 +283,239 @@ export const EstagiariosView: React.FC<EstagiariosViewProps> = ({
     }
   };
 
-  return (
-    <div className="flex-1 overflow-y-auto p-6 md:p-8 flex flex-col gap-6 select-none relative" id="view-estagiarios">
+  const mainContent = (
+    <div className={`bg-zinc-950/85 backdrop-blur-2xl border border-amber-400/40 rounded-2xl w-full p-5 md:p-7 shadow-[0_12px_45px_rgba(0,0,0,0.7),0_0_35px_rgba(212,175,55,0.2)] flex flex-col overflow-hidden relative ${embedded ? 'max-h-[85vh] my-auto' : 'max-w-6xl mx-auto'}`}>
+      <HunterWatermark size={280} opacity="opacity-[0.08]" />
+
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
-        <div>
-          <h2 className="text-2xl font-extrabold text-white tracking-tight">
-            Banco de <span className="text-gold-gradient-bright">Estagiários</span>
-          </h2>
-          <p className="text-sm text-zinc-400">
-            Relação de estagiários cadastrados com importação de planilha Excel e sincronização com Escolas.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-700/60 pb-4 shrink-0 relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-400/50 flex items-center justify-center text-[#FFD700] shrink-0 shadow-[0_0_15px_rgba(255,215,0,0.25)]">
+            <UserCheck className="w-5 h-5 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />
+          </div>
+          <div>
+            <h2 className="text-xl font-extrabold text-amber-400 drop-shadow-[0_0_10px_rgba(255,215,0,0.3)] tracking-tight flex items-center gap-2">
+              Banco de <span className="text-gold-gradient-bright">Estagiários</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 font-medium">
+                Cadastro de Candidatos
+              </span>
+            </h2>
+            <p className="text-xs text-zinc-300">
+              Relação de estagiários cadastrados com importação de planilha Excel e sincronização com Escolas.
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <GlowButton
             onClick={() => setShowModal(true)}
             icon={<Plus className="w-4 h-4 text-amber-400" />}
             id="btn-add-estagiario"
+            className="py-2 px-4 text-xs"
           >
             Cadastrar
           </GlowButton>
+
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-amber-500/15 border border-amber-400/60 flex items-center justify-center text-[#FFD700] hover:text-white hover:bg-amber-500/30 hover:border-amber-300 transition-all cursor-pointer shadow-[0_0_10px_rgba(255,215,0,0.25)] shrink-0"
+              title="Fechar Aba"
+            >
+              <X className="w-4 h-4 text-[#FFD700]" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* Search Bar */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row gap-3 my-4 shrink-0 relative z-10">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-[#39FF14] absolute left-3.5 top-1/2 -translate-y-1/2" style={{ color: '#39FF14' }} />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Pesquisar"
+            placeholder="Pesquisar por nome, CPF, cidade ou escola..."
             style={{ color: '#39FF14' }}
-            className="w-full bg-zinc-950/90 border border-white rounded-xl pl-10 pr-4 py-3 text-sm text-[#39FF14] placeholder-[#39FF14] focus:outline-none focus:border-white transition-colors font-medium"
+            className="w-full bg-zinc-900/80 border border-zinc-700/80 rounded-xl pl-10 pr-4 py-2.5 text-sm text-[#39FF14] placeholder-emerald-400/60 focus:outline-none focus:border-amber-400/80 transition-colors font-medium shadow-inner"
           />
         </div>
-        <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 font-mono">
+        <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-900/80 border border-zinc-700/80 text-xs text-zinc-300 font-mono shrink-0">
           <span>REGISTROS:</span>
-          <span className="text-amber-300 font-bold">{estagiarios.length}</span>
+          <span className="text-amber-300 font-bold px-2 py-0.5 rounded bg-amber-500/20 border border-amber-500/40">{estagiarios.length}</span>
         </div>
       </div>
 
       {/* Main Table / Empty State */}
-      {estagiarios.length === 0 ? (
-        <div className="flex-1 flex flex-col items-center justify-center py-16 px-4 rounded-2xl bg-zinc-950/60 border border-zinc-800/80 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-            <FileSpreadsheet className="w-8 h-8" />
+      <div className="flex-1 overflow-y-auto relative z-10 pr-1">
+        {estagiarios.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 px-4 rounded-xl bg-zinc-900/40 border border-zinc-700/50 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-3">
+              <FileSpreadsheet className="w-7 h-7" />
+            </div>
+            <h3 className="text-base font-bold text-amber-400 mb-1">
+              Nenhum Estagiário Cadastrado
+            </h3>
+            <p className="text-xs text-zinc-300 max-w-md mb-4">
+              Clique no botão <strong className="text-amber-300">"Cadastrar"</strong> para colar os dados direto de uma planilha do Excel (com suporte aos 20 campos na ordem especificada).
+            </p>
+            <GlowButton
+              onClick={() => setShowModal(true)}
+              icon={<Plus className="w-4 h-4 text-amber-400" />}
+              className="text-xs py-2 px-4"
+            >
+              Cadastrar (Colar do Excel)
+            </GlowButton>
           </div>
-          <h3 className="text-lg font-bold text-white mb-1">
-            Nenhum Estagiário Cadastrado
-          </h3>
-          <p className="text-sm text-zinc-400 max-w-md mb-6">
-            Clique no botão <strong className="text-amber-300">"Cadastrar"</strong> para colar os dados direto de uma planilha do Excel (com suporte aos 20 campos na ordem especificada).
-          </p>
-          <GlowButton
-            onClick={() => setShowModal(true)}
-            icon={<Plus className="w-4 h-4 text-amber-400" />}
-          >
-            Cadastrar (Colar do Excel)
-          </GlowButton>
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="py-12 text-center text-zinc-400 bg-zinc-950/40 rounded-xl border border-zinc-800">
-          Nenhum estagiário coincide com a busca "{searchTerm}".
-        </div>
-      ) : (
-        <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-950/80">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-zinc-900/90 text-xs font-semibold text-zinc-400 uppercase tracking-wider border-b border-zinc-800">
-              <tr>
-                <th className="py-3 px-4">Estagiário / Nascimento</th>
-                <th className="py-3 px-4">CPF / Contato</th>
-                <th className="py-3 px-4">Endereço / Cidade</th>
-                <th className="py-3 px-4">Escola do Candidato (Sincronizada)</th>
-                <th className="py-3 px-4 text-right">Ações</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800/60 text-zinc-200">
-              {filtered.map((est) => {
-                const isEscola01 = !est.escolaNome || est.escolaNome.includes('01') || est.escolaNome.includes('Padrão');
-                return (
-                  <tr key={est.id} className="hover:bg-zinc-900/60 transition-colors">
-                    <td className="py-3.5 px-4">
-                      <div className="font-semibold text-[#39FF14] flex items-center gap-2" style={{ color: '#39FF14' }}>
-                        <WhatsAppButton
-                          phone={est.fone}
-                          companyName={est.nome}
-                          size="sm"
-                        />
-                        <span>{est.nome}</span>
-                      </div>
-                      <div className="text-xs mt-0.5 flex items-center gap-2 text-[#39FF14]" style={{ color: '#39FF14' }}>
-                        <span>Nasc: {est.dataNascimento || '—'}</span>
-                        {est.responsavel && (
-                          <span style={{ color: '#39FF14' }}>• Resp: {est.responsavel}</span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-mono text-xs text-[#39FF14]" style={{ color: '#39FF14' }}>{est.cpf || '—'}</div>
-                      <div className="text-xs font-mono mt-0.5 text-[#39FF14]" style={{ color: '#39FF14' }}>{est.fone || '—'}</div>
-                      <div className="text-[11px] text-[#39FF14]" style={{ color: '#39FF14' }}>{est.email || ''}</div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="text-xs text-[#39FF14]" style={{ color: '#39FF14' }}>{est.endereco || '—'}</div>
-                      <div className="text-xs mt-0.5 text-[#39FF14]" style={{ color: '#39FF14' }}>
-                        {est.bairro || ''} {est.cidade ? `• ${est.cidade} - ${est.estado || 'SP'}` : ''} ({est.cep || '—'})
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4">
-                      <div className="font-medium flex items-center gap-1.5 text-[#39FF14]" style={{ color: '#39FF14' }}>
-                        <Building2 className="w-3.5 h-3.5 text-[#FFD700] shrink-0 drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
-                        <span>{est.escolaNome || 'Escola Cadastro 01'}</span>
-                      </div>
-                      <div className="text-[11px] mt-0.5 font-mono text-[#39FF14]" style={{ color: '#39FF14' }}>
-                        CNPJ: {est.escolaCnpj || '—'}
-                      </div>
-                      <div className="mt-1">
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/25">
-                          <CheckCircle2 className="w-3 h-3 text-[#FFD700]" />
-                          <span>Módulo Escolas OK</span>
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-3.5 px-4 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <WhatsAppButton
-                          phone={est.fone}
-                          companyName={est.nome}
-                        />
-                        <button
-                          onClick={() => setSelectedEstagiario(est)}
-                          className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-amber-300 hover:text-white hover:border-amber-400/60 transition-all cursor-pointer"
-                          title="Ver ficha completa do estagiário e da escola"
-                        >
-                          <Eye className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
-                        </button>
-                        {onDeleteEstagiario && (
+        ) : filtered.length === 0 ? (
+          <div className="py-12 text-center text-zinc-300 bg-zinc-900/40 rounded-xl border border-zinc-700/50 text-sm">
+            Nenhum estagiário coincide com a busca "{searchTerm}".
+          </div>
+        ) : (
+          <div className="overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900/50">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-zinc-800/80 text-xs font-semibold text-zinc-300 uppercase tracking-wider border-b border-zinc-700/70">
+                <tr>
+                  <th className="py-3 px-4">Estagiário / Nascimento</th>
+                  <th className="py-3 px-4">CPF / Contato</th>
+                  <th className="py-3 px-4">Endereço / Cidade</th>
+                  <th className="py-3 px-4">Escola do Candidato (Sincronizada)</th>
+                  <th className="py-3 px-4 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-700/50 text-zinc-200 text-xs">
+                {filtered.map((est) => {
+                  return (
+                    <tr key={est.id} className="hover:bg-zinc-800/40 transition-colors">
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-sm text-[#39FF14] flex items-center gap-2" style={{ color: '#39FF14' }}>
+                          <WhatsAppButton
+                            phone={est.fone}
+                            companyName={est.nome}
+                            size="sm"
+                          />
+                          <span>{est.nome}</span>
+                        </div>
+                        <div className="text-xs mt-0.5 flex items-center gap-2 text-[#39FF14]" style={{ color: '#39FF14', opacity: 0.9 }}>
+                          <span>Nasc: {est.dataNascimento || '—'}</span>
+                          {est.responsavel && (
+                            <span style={{ color: '#39FF14' }}>• Resp: {est.responsavel}</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-mono text-xs text-[#39FF14]" style={{ color: '#39FF14' }}>{est.cpf || '—'}</div>
+                        <div className="text-xs font-mono mt-0.5 text-[#39FF14]" style={{ color: '#39FF14' }}>{est.fone || '—'}</div>
+                        <div className="text-[11px] text-[#39FF14]" style={{ color: '#39FF14', opacity: 0.9 }}>{est.email || ''}</div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="text-xs text-[#39FF14]" style={{ color: '#39FF14' }}>{est.endereco || '—'}</div>
+                        <div className="text-xs mt-0.5 text-[#39FF14]" style={{ color: '#39FF14', opacity: 0.9 }}>
+                          {est.bairro || ''} {est.cidade ? `• ${est.cidade} - ${est.estado || 'SP'}` : ''} ({est.cep || '—'})
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="font-medium flex items-center gap-1.5 text-[#39FF14]" style={{ color: '#39FF14' }}>
+                          <Building2 className="w-3.5 h-3.5 text-[#FFD700] shrink-0 drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
+                          <span>{est.escolaNome || 'Escola Cadastro 01'}</span>
+                        </div>
+                        <div className="text-[11px] mt-0.5 font-mono text-[#39FF14]" style={{ color: '#39FF14', opacity: 0.9 }}>
+                          CNPJ: {est.escolaCnpj || '—'}
+                        </div>
+                        <div className="mt-1">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/25">
+                            <CheckCircle2 className="w-3 h-3 text-[#FFD700]" />
+                            <span>Módulo Escolas OK</span>
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <WhatsAppButton
+                            phone={est.fone}
+                            companyName={est.nome}
+                          />
                           <button
-                            onClick={() => setEstagiarioToDelete(est)}
-                            className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/30 transition-all cursor-pointer"
-                            title="Excluir estagiário"
+                            onClick={() => setSelectedEstagiario(est)}
+                            className="p-1.5 rounded-lg bg-zinc-800/80 border border-zinc-700 text-amber-300 hover:text-white hover:border-amber-400/60 transition-all cursor-pointer shadow-sm"
+                            title="Ver ficha completa do estagiário e da escola"
                           >
-                            <Trash2 className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
+                            <Eye className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
                           </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                          {onDeleteEstagiario && (
+                            <button
+                              onClick={() => setEstagiarioToDelete(est)}
+                              className="p-1.5 rounded-lg bg-zinc-800/80 border border-zinc-700 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/30 transition-all cursor-pointer shadow-sm"
+                              title="Excluir estagiário"
+                            >
+                              <Trash2 className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      {/* Footer com Fechar */}
+      {onClose && (
+        <div className="pt-3.5 mt-3.5 border-t border-zinc-700/60 flex items-center justify-between shrink-0 relative z-10">
+          <span className="text-xs text-zinc-300">
+            Total de estagiários listados: <strong style={{ color: '#39FF14' }}>{filtered.length}</strong>
+          </span>
+          <button
+            onClick={onClose}
+            className="px-6 py-2 rounded-xl bg-amber-500/15 border border-amber-400/60 text-amber-300 hover:text-white hover:bg-amber-500/30 hover:border-amber-300 text-sm font-bold transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
+          >
+            Fechar
+          </button>
         </div>
       )}
+    </div>
+  );
+
+  return (
+    <div
+      className={
+        embedded
+          ? "w-full max-w-6xl mx-auto my-auto animate-fadeIn text-left py-2 flex flex-col flex-1"
+          : "flex-1 overflow-hidden flex flex-col h-full min-h-[520px] text-left select-none relative bg-black"
+      }
+      id="view-estagiarios"
+    >
+      {!embedded && (
+        <>
+          {/* Imagem de Fundo em Formato Tela Cheia (mesmo fundo do painel administrativo) */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <img
+              src={adminOfficeFullscreenBg || '/admin_office_fullscreen_bg.jpg'}
+              alt="Painel Administrativo"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('admin_office_fullscreen_bg')) {
+                  target.src = '/admin_office_fullscreen_bg.jpg';
+                }
+              }}
+              className="w-full h-full object-cover object-center filter contrast-100 brightness-105 opacity-100 -scale-x-100 transition-all duration-300 ease-out"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/15 pointer-events-none" />
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 flex flex-col relative z-10">
+            {mainContent}
+          </div>
+        </>
+      )}
+
+      {embedded && mainContent}
 
       {/* Detalhes Estagiario & Escola Modal */}
       {selectedEstagiario && (
