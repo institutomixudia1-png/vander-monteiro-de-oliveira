@@ -4,20 +4,7 @@ import { TCEContrato } from '../types/hunter';
 import { HunterPDFLogo } from './HunterPDFLogo';
 import { HunterWatermark } from './HunterWatermark';
 import { getMatrizRelatorio } from '../data/matrizesDefaults';
-import html2pdf from 'html2pdf.js';
-
-const getHtml2Pdf = () => {
-  if (typeof window !== 'undefined' && (window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  if (typeof html2pdf === 'function') {
-    return html2pdf;
-  }
-  if (html2pdf && typeof (html2pdf as any).default === 'function') {
-    return (html2pdf as any).default;
-  }
-  return null;
-};
+import { downloadElementAsPDF } from '../utils/pdfDownloader';
 
 interface RelatorioAtividadesPDFModalProps {
   tce: TCEContrato;
@@ -88,41 +75,27 @@ export const RelatorioAtividadesPDFModal: React.FC<RelatorioAtividadesPDFModalPr
     }, 6000);
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     if (!docRef.current) return;
     setIsDownloading(true);
 
     const filename = `Hunter_Relatorio_Atividades_N${tce.numero}_${(estagiario?.nome || 'Estagiario').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
-    const opt: any = {
-      margin: [8, 8, 8, 8],
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'] }
-    };
-
-    const pdfWorker = getHtml2Pdf();
-    if (!pdfWorker) {
-      console.warn('html2pdf não disponível, acionando impressão nativa');
-      window.print();
-      setIsDownloading(false);
-      return;
-    }
-
-    pdfWorker()
-      .set(opt)
-      .from(docRef.current)
-      .save()
-      .then(() => {
-        setIsDownloading(false);
-      })
-      .catch((err: any) => {
-        console.error('Erro ao gerar PDF do Relatório:', err);
-        window.print();
-        setIsDownloading(false);
+    try {
+      const result = await downloadElementAsPDF(docRef.current, filename, {
+        margin: [8, 8, 8, 8],
+        pagebreakMode: ['css', 'legacy']
       });
+
+      if (result.success) {
+        setCopiedStatus(`✓ PDF (${filename}) baixado com sucesso no seu computador!`);
+      }
+    } catch (err: any) {
+      console.error('Erro ao gerar PDF do Relatório:', err);
+      window.print();
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   useEffect(() => {

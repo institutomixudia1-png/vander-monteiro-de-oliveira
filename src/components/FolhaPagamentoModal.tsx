@@ -4,20 +4,7 @@ import { ContratoParceria, TCEContrato, HunterDados, FolhaPagamentoSalva, FolhaE
 import { TermoRescisaoData } from './TermoRescisaoPDFModal';
 import { HunterWatermark } from './HunterWatermark';
 import { HunterPDFLogo } from './HunterPDFLogo';
-import html2pdf from 'html2pdf.js';
-
-const getHtml2Pdf = () => {
-  if (typeof window !== 'undefined' && (window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  if (typeof html2pdf === 'function') {
-    return html2pdf;
-  }
-  if (html2pdf && typeof (html2pdf as any).default === 'function') {
-    return (html2pdf as any).default;
-  }
-  return null;
-};
+import { downloadElementAsPDF } from '../utils/pdfDownloader';
 
 interface FolhaValores {
   faltas: string;
@@ -352,36 +339,24 @@ export const FolhaPagamentoModal: React.FC<FolhaPagamentoModalProps> = ({
       onSaveFolha(novaFolha);
     }
 
-    // 4. Download do PDF para a pasta Downloads
+    // 4. Download do PDF para o computador
     if (pdfDocRef.current) {
       setIsDownloading(true);
       const filename = `Hunter_Folha_Pagamento_${referencia}_${ano}_${(empresa.razaoSocial || empresa.nomeFantasia || 'Empresa').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
-      const opt: any = {
-        margin: [0, 0, 0, 0],
-        filename: filename,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'] }
-      };
+      try {
+        const result = await downloadElementAsPDF(pdfDocRef.current, filename, {
+          margin: [0, 0, 0, 0],
+          pagebreakMode: ['css', 'legacy']
+        });
 
-      const pdfWorker = getHtml2Pdf();
-      if (pdfWorker) {
-        pdfWorker()
-          .set(opt)
-          .from(pdfDocRef.current)
-          .save()
-          .then(() => {
-            setIsDownloading(false);
-          })
-          .catch((err: any) => {
-            console.error('Erro ao gerar PDF da folha:', err);
-            window.print();
-            setIsDownloading(false);
-          });
-      } else {
+        if (result.success) {
+          setCopiedStatus(`✓ PDF (${filename}) baixado com sucesso no seu computador!`);
+        }
+      } catch (err: any) {
+        console.error('Erro ao gerar PDF da folha:', err);
         window.print();
+      } finally {
         setIsDownloading(false);
       }
     } else {

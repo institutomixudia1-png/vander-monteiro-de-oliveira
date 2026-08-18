@@ -5,20 +5,7 @@ import { HunterLogo } from './HunterLogo';
 import { HunterPDFLogo } from './HunterPDFLogo';
 import { HunterWatermark } from './HunterWatermark';
 import { getMatrizConvenio } from '../data/matrizesDefaults';
-import html2pdf from 'html2pdf.js';
-
-const getHtml2Pdf = () => {
-  if (typeof window !== 'undefined' && (window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  if (typeof html2pdf === 'function') {
-    return html2pdf;
-  }
-  if (html2pdf && typeof (html2pdf as any).default === 'function') {
-    return (html2pdf as any).default;
-  }
-  return null;
-};
+import { downloadElementAsPDF } from '../utils/pdfDownloader';
 
 interface ContratoParceriaPDFModalProps {
   contrato: ContratoParceria;
@@ -75,42 +62,28 @@ export const ContratoParceriaPDFModal: React.FC<ContratoParceriaPDFModalProps> =
     }, 6000);
   };
 
-  // Função para baixar via html2pdf.js
-  const handleDownloadPDF = () => {
+  // Função para baixar via pdfDownloader
+  const handleDownloadPDF = async () => {
     if (!docRef.current) return;
     setIsDownloading(true);
 
     const filename = `Hunter_Contrato_Parceria_${numContratoStr}_${(nomeFantasia || razaoSocial).replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
-    const opt: any = {
-      margin: [8, 8, 8, 8], // milímetros [topo, esquerda, base, direita]
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'] }
-    };
-
-    const pdfWorker = getHtml2Pdf();
-    if (!pdfWorker) {
-      console.warn('html2pdf não disponível, acionando impressão nativa');
-      window.print();
-      setIsDownloading(false);
-      return;
-    }
-
-    pdfWorker()
-      .set(opt)
-      .from(docRef.current)
-      .save()
-      .then(() => {
-        setIsDownloading(false);
-      })
-      .catch((err: any) => {
-        console.error('Erro ao gerar PDF:', err);
-        window.print();
-        setIsDownloading(false);
+    try {
+      const result = await downloadElementAsPDF(docRef.current, filename, {
+        margin: [8, 8, 8, 8],
+        pagebreakMode: ['css', 'legacy']
       });
+
+      if (result.success) {
+        setCopiedStatus(`✓ PDF (${filename}) baixado com sucesso no seu computador!`);
+      }
+    } catch (err: any) {
+      console.error('Erro ao gerar PDF do Contrato de Parceria:', err);
+      window.print();
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   // Auto-download quando acionado pela criação de novo contrato

@@ -3,20 +3,7 @@ import { X, Printer, DollarSign, Calendar, Users, Building2, FileText, Download,
 import { FolhaPagamentoSalva, HunterDados } from '../types/hunter';
 import { HunterWatermark } from './HunterWatermark';
 import { HunterPDFLogo } from './HunterPDFLogo';
-import html2pdf from 'html2pdf.js';
-
-const getHtml2Pdf = () => {
-  if (typeof window !== 'undefined' && (window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  if (typeof html2pdf === 'function') {
-    return html2pdf;
-  }
-  if (html2pdf && typeof (html2pdf as any).default === 'function') {
-    return (html2pdf as any).default;
-  }
-  return null;
-};
+import { downloadElementAsPDF } from '../utils/pdfDownloader';
 
 interface FolhaPDFModalProps {
   folha: FolhaPagamentoSalva;
@@ -286,27 +273,21 @@ export const FolhaPDFModal: React.FC<FolhaPDFModalProps> = ({ folha, hunterDados
 
     const filename = `Hunter_Folha_Pagamento_${folha.referencia}_${folha.ano}_${(cici).replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
-    const opt: any = {
-      margin: [0, 0, 0, 0],
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'] }
-    };
+    try {
+      const result = await downloadElementAsPDF(docRef.current, filename, {
+        margin: [0, 0, 0, 0],
+        pagebreakMode: ['css', 'legacy']
+      });
 
-    const pdfWorker = getHtml2Pdf();
-    if (pdfWorker) {
-      try {
-        await pdfWorker().set(opt).from(docRef.current).save();
-      } catch (err) {
-        console.error('Erro ao baixar PDF:', err);
-        window.print();
+      if (result.success) {
+        setCopiedStatus(`✓ PDF (${filename}) baixado com sucesso no seu computador!`);
       }
-    } else {
+    } catch (err: any) {
+      console.error('Erro ao baixar PDF:', err);
       window.print();
+    } finally {
+      setIsDownloading(false);
     }
-    setIsDownloading(false);
   };
 
   useEffect(() => {

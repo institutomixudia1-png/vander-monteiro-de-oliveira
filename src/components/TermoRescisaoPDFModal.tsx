@@ -6,20 +6,7 @@ import { HunterPDFLogo } from './HunterPDFLogo';
 import { HunterWatermark } from './HunterWatermark';
 import { getMatrizRescisao } from '../data/matrizesDefaults';
 import { RenderReciboStub, parseVal, fmtVal, calcularDiasTrabalhados, calcularDiasTotaisEstagiados, getDiaDoUltimoDiaEstagiado } from './FolhaPDFModal';
-import html2pdf from 'html2pdf.js';
-
-const getHtml2Pdf = () => {
-  if (typeof window !== 'undefined' && (window as any).html2pdf) {
-    return (window as any).html2pdf;
-  }
-  if (typeof html2pdf === 'function') {
-    return html2pdf;
-  }
-  if (html2pdf && typeof (html2pdf as any).default === 'function') {
-    return (html2pdf as any).default;
-  }
-  return null;
-};
+import { downloadElementAsPDF } from '../utils/pdfDownloader';
 
 interface TermoRescisaoPDFModalProps {
   data: TermoRescisaoData;
@@ -85,41 +72,27 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
     }, 6000);
   };
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = async () => {
     if (!docRef.current) return;
     setIsDownloading(true);
 
     const filename = `Hunter_Termo_Rescisao_N${numeroRescisao}_${(estagiario?.nome || 'Estagiario').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
-    const opt: any = {
-      margin: [0, 0, 0, 0],
-      filename: filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['css', 'legacy'], before: '.html2pdf__page-break' }
-    };
-
-    const pdfWorker = getHtml2Pdf();
-    if (!pdfWorker) {
-      console.warn('html2pdf não disponível, acionando impressão nativa');
-      window.print();
-      setIsDownloading(false);
-      return;
-    }
-
-    pdfWorker()
-      .set(opt)
-      .from(docRef.current)
-      .save()
-      .then(() => {
-        setIsDownloading(false);
-      })
-      .catch((err: any) => {
-        console.error('Erro ao gerar PDF da Rescisão:', err);
-        window.print();
-        setIsDownloading(false);
+    try {
+      const result = await downloadElementAsPDF(docRef.current, filename, {
+        margin: [0, 0, 0, 0],
+        pagebreakMode: ['css', 'legacy']
       });
+
+      if (result.success) {
+        setCopiedStatus(`✓ PDF (${filename}) baixado com sucesso no seu computador!`);
+      }
+    } catch (err: any) {
+      console.error('Erro ao gerar PDF da Rescisão:', err);
+      window.print();
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   useEffect(() => {
@@ -287,7 +260,7 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
             {/* PÁGINA 1: TERMO DE RESCISÃO DO TCE */}
             <div 
               className="relative overflow-hidden bg-white text-black p-8 sm:p-12 rounded-xl shadow-2xl print:shadow-none print:rounded-none font-sans text-[11px] leading-relaxed select-text"
-              style={{ pageBreakAfter: 'always', breakAfter: 'page' }}
+              style={{ pageBreakAfter: 'always', breakAfter: 'page', pageBreakInside: 'avoid', breakInside: 'avoid' }}
             >
               
               {/* MARCA D'ÁGUA HUNTER NA FOLHA DO DOCUMENTO */}
@@ -463,8 +436,8 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
 
           {/* PÁGINA 2 / ANEXO: RECIBO DE PAGAMENTO (FOLHA DO ESTAGIÁRIO RESCINDIDO) */}
           <div 
-            className="html2pdf__page-break relative overflow-hidden bg-white text-black p-6 sm:p-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none font-sans text-[11px] leading-relaxed select-text"
-            style={{ pageBreakBefore: 'always', breakBefore: 'page' }}
+            className="relative overflow-hidden bg-white text-black p-6 sm:p-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none font-sans text-[11px] leading-relaxed select-text"
+            style={{ pageBreakInside: 'avoid', breakInside: 'avoid' }}
           >
             <HunterWatermark size={440} numericOpacity={0.045} />
             
