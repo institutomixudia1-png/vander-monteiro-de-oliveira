@@ -5,13 +5,15 @@ interface HunterLogoProps {
   size?: number;
   showText?: boolean;
   glow?: boolean;
+  watermark?: boolean;
 }
 
 export const HunterLogo: React.FC<HunterLogoProps> = ({
   className = '',
   size = 40,
   showText = false,
-  glow = true
+  glow = true,
+  watermark = false
 }) => {
   return (
     <div className={`inline-flex items-center gap-3 select-none ${className}`}>
@@ -20,7 +22,7 @@ export const HunterLogo: React.FC<HunterLogoProps> = ({
         style={{ width: size, height: size }}
       >
         {/* Ambient gold glow */}
-        {glow && (
+        {glow && !watermark && (
           <div 
             className="absolute -inset-1 rounded-xl opacity-40 blur-md transition-opacity duration-300 group-hover:opacity-80"
             style={{
@@ -36,7 +38,7 @@ export const HunterLogo: React.FC<HunterLogoProps> = ({
           viewBox="0 0 100 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="relative z-10 drop-shadow-[0_2px_10px_rgba(212,175,55,0.6)]"
+          className={`relative z-10 ${watermark || !glow ? '' : 'drop-shadow-[0_2px_10px_rgba(212,175,55,0.6)]'}`}
         >
           <defs>
             <linearGradient id="goldTopLeft" x1="0%" y1="0%" x2="100%" y2="100%">

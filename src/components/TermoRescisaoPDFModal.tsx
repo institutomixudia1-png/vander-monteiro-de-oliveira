@@ -92,11 +92,12 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
     const filename = `Hunter_Termo_Rescisao_N${numeroRescisao}_${(estagiario?.nome || 'Estagiario').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
 
     const opt: any = {
-      margin: [5, 5, 5, 5],
+      margin: [0, 0, 0, 0],
       filename: filename,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['css', 'legacy'], before: '.html2pdf__page-break' }
     };
 
     const pdfWorker = getHtml2Pdf();
@@ -280,22 +281,26 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
         )}
 
         {/* Corpo do Documento (A4 Estilo e Impressão) */}
-        <div ref={docRef} className="flex-1 overflow-y-auto p-4 sm:p-8 bg-zinc-900/50 print:p-0 print:bg-white print:overflow-visible space-y-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-zinc-900/50 print:p-0 print:bg-white print:overflow-visible">
+          <div ref={docRef} className="max-w-[800px] mx-auto space-y-8 print:space-y-0">
           
-          {/* PÁGINA 1: TERMO DE RESCISÃO DO TCE */}
-          <div className="relative overflow-hidden max-w-[800px] mx-auto bg-white text-black p-8 sm:p-12 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none font-sans text-[11px] leading-relaxed select-text page-break">
-            
-            {/* MARCA D'ÁGUA HUNTER NA FOLHA DO DOCUMENTO */}
-            <HunterWatermark size={440} opacity="opacity-[0.09]" />
+            {/* PÁGINA 1: TERMO DE RESCISÃO DO TCE */}
+            <div 
+              className="relative overflow-hidden bg-white text-black p-8 sm:p-12 rounded-xl shadow-2xl print:shadow-none print:rounded-none font-sans text-[11px] leading-relaxed select-text"
+              style={{ pageBreakAfter: 'always', breakAfter: 'page' }}
+            >
+              
+              {/* MARCA D'ÁGUA HUNTER NA FOLHA DO DOCUMENTO */}
+              <HunterWatermark size={440} numericOpacity={0.045} />
 
-            <div className="relative z-10">
-              {/* CABEÇALHO DO MODELO COM A LOGO E NÚMERO DA RESCISÃO */}
-            <div className="flex items-center justify-between border-b-2 border-zinc-300 pb-4 mb-4">
-              <HunterPDFLogo height={48} />
-              <div className="text-right font-bold text-sm text-black">
-                Rescisão: {numeroRescisao}
-              </div>
-            </div>
+              <div className="relative z-10">
+                {/* CABEÇALHO DO MODELO COM A LOGO E NÚMERO DA RESCISÃO */}
+                <div className="flex items-center justify-between border-b-2 border-zinc-300 pb-4 mb-4">
+                  <HunterPDFLogo height={48} />
+                  <div className="text-right font-bold text-sm text-black">
+                    Rescisão: {numeroRescisao}
+                  </div>
+                </div>
 
             {/* TÍTULO PRINCIPAL DA MATRIZ */}
             <div className="text-center my-4">
@@ -457,8 +462,11 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
           </div>
 
           {/* PÁGINA 2 / ANEXO: RECIBO DE PAGAMENTO (FOLHA DO ESTAGIÁRIO RESCINDIDO) */}
-          <div className="relative overflow-hidden max-w-[800px] mx-auto bg-white text-black p-6 sm:p-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none font-sans text-[11px] leading-relaxed select-text">
-            <HunterWatermark size={440} opacity="opacity-[0.09]" />
+          <div 
+            className="html2pdf__page-break relative overflow-hidden bg-white text-black p-6 sm:p-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none font-sans text-[11px] leading-relaxed select-text"
+            style={{ pageBreakBefore: 'always', breakBefore: 'page' }}
+          >
+            <HunterWatermark size={440} numericOpacity={0.045} />
             
             <div className="relative z-10 space-y-4">
               <div className="border-b-2 border-black pb-2 text-center">
@@ -534,5 +542,6 @@ export const TermoRescisaoPDFModal: React.FC<TermoRescisaoPDFModalProps> = ({ da
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 };

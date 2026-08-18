@@ -86,7 +86,7 @@ export const ContratoParceriaPDFModal: React.FC<ContratoParceriaPDFModalProps> =
       margin: [8, 8, 8, 8], // milímetros [topo, esquerda, base, direita]
       filename: filename,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
+      html2canvas: { scale: 2, useCORS: true, logging: false, scrollY: 0 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['css', 'legacy'] }
     };

@@ -425,38 +425,7 @@ export const FolhaPagamentoModal: React.FC<FolhaPagamentoModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <button
-              type="button"
-              onClick={handleCopyEmailAndOpenAutentique}
-              className="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 hover:bg-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(16,185,129,0.25)]"
-              title="Copiar e-mail da empresa e abrir Autentique"
-            >
-              <Copy className="w-3.5 h-3.5 text-emerald-400" />
-              <ExternalLink className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Copiar E-mail & Autentique</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={handlePrintAndSave}
-              disabled={isDownloading}
-              className="px-4 py-2 rounded-xl bg-amber-500/20 border border-amber-400/60 hover:bg-amber-500/35 text-[#FFD700] hover:text-white font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.25)]"
-              title="Salvar folha, baixar PDF, copiar e-mail da empresa e abrir Autentique"
-            >
-              {isDownloading ? (
-                <>
-                  <Loader2 className="w-4 h-4 text-[#FFD700] animate-spin" />
-                  <span>Gerando Folha PDF...</span>
-                </>
-              ) : (
-                <>
-                  <Printer className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
-                  <span className="text-[#FFD700] font-bold">Imprimir Folha e Salvar PDF</span>
-                </>
-              )}
-            </button>
-
+          <div className="flex items-center gap-2.5">
             <button
               onClick={onClose}
               className="w-9 h-9 rounded-full bg-amber-500/15 border border-amber-400/60 flex items-center justify-center text-[#FFD700] hover:text-white hover:bg-amber-500/30 transition-all cursor-pointer shadow-[0_0_12px_rgba(255,215,0,0.3)]"
