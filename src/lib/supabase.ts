@@ -266,6 +266,59 @@ export async function restoreFromSupabase(client = supabase): Promise<{ success:
   }
 }
 
+/**
+ * Hidrata os dados a partir do Supabase no carregamento inicial da aplicação.
+ * Garante que alterações feitas na web permaneçam mesmo após deploys ou atualizações do código.
+ */
+export async function hydrateFromSupabaseOnStartup(client = supabase): Promise<{ hydrated: boolean; count?: number; message?: string }> {
+  try {
+    const { data, error } = await client
+      .from('hunter_app_data')
+      .select('*')
+      .eq('id', 'main_hunter_database')
+      .single();
+
+    if (error) {
+      // Se ainda não existir registro no banco na nuvem, faz o primeiro sync
+      if (error.code === 'PGRST116') {
+        await syncAllToSupabase(client);
+        return { hydrated: false, message: 'Banco de dados inicializado na nuvem.' };
+      }
+      return { hydrated: false, message: error.message };
+    }
+
+    if (data && data.data && typeof data.data === 'object') {
+      const payloadData = data.data;
+      let restoredCount = 0;
+
+      Object.entries(payloadData).forEach(([key, val]) => {
+        if (key.startsWith('_')) return;
+        if (typeof val === 'object') {
+          localStorage.setItem(key, JSON.stringify(val));
+        } else {
+          localStorage.setItem(key, String(val));
+        }
+        restoredCount++;
+      });
+
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('hunter_database_restored', { detail: { count: restoredCount } }));
+      }
+
+      return {
+        hydrated: true,
+        count: restoredCount,
+        message: `${restoredCount} blocos de dados sincronizados da nuvem.`,
+      };
+    }
+
+    return { hydrated: false };
+  } catch (err: any) {
+    console.warn('Hidratação inicial da nuvem não pôde ser completada (mantendo dados locais):', err);
+    return { hydrated: false, message: err.message };
+  }
+}
+
 let autoSaveTimeout: any = null;
 let isAutoSaving = false;
 

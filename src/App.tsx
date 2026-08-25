@@ -14,7 +14,7 @@ import { EstagiariosView } from './components/views/EstagiariosView';
 import { EscolasView } from './components/views/EscolasView';
 import { HunterWatermark } from './components/HunterWatermark';
 import { DEFAULT_EMPRESAS, DEFAULT_ESTAGIARIOS, DEFAULT_ESCOLAS, DEFAULT_SEGURADORAS, DEFAULT_CONTRATOS } from './data/sampleData';
-import { syncAllToSupabase, triggerAutoSaveToCloud, CloudSyncStatus } from './lib/supabase';
+import { syncAllToSupabase, triggerAutoSaveToCloud, hydrateFromSupabaseOnStartup, CloudSyncStatus } from './lib/supabase';
 import { CheckCircle2, AlertTriangle } from 'lucide-react';
 
 const STORAGE_KEYS = {
@@ -82,19 +82,19 @@ export default function App() {
       if (savedPass && savedPass.trim()) setSystemPassword(savedPass.trim());
 
       const savedEmpresas = localStorage.getItem(STORAGE_KEYS.EMPRESAS);
-      if (savedEmpresas) {
+      if (savedEmpresas !== null) {
         const parsed = JSON.parse(savedEmpresas);
         if (Array.isArray(parsed)) setEmpresas(parsed);
       }
 
       const savedEstag = localStorage.getItem(STORAGE_KEYS.ESTAGIARIOS);
-      if (savedEstag) {
+      if (savedEstag !== null) {
         const parsed = JSON.parse(savedEstag);
         if (Array.isArray(parsed)) setEstagiarios(parsed);
       }
 
       const savedEscolas = localStorage.getItem(STORAGE_KEYS.ESCOLAS);
-      if (savedEscolas) {
+      if (savedEscolas !== null) {
         const parsed = JSON.parse(savedEscolas);
         if (Array.isArray(parsed)) setEscolas(parsed);
       }
@@ -102,6 +102,15 @@ export default function App() {
       console.error('Erro ao recarregar dados do localStorage:', e);
     }
   };
+
+  // Conecta evento de restauração do banco à recarga de estado local
+  useEffect(() => {
+    const handleDatabaseRestored = () => {
+      reloadAllLocalData();
+    };
+    window.addEventListener('hunter_database_restored', handleDatabaseRestored);
+    return () => window.removeEventListener('hunter_database_restored', handleDatabaseRestored);
+  }, []);
 
   const handleSaveToCloud = async () => {
     if (isSavingCloud) return;
@@ -128,30 +137,13 @@ export default function App() {
     }
   };
 
-  // Seed de cadastros (30 candidatos com escolas, 10 empresas, 2 seguradoras, 6 escolas, 10 contratos de parceria)
-  const STORAGE_SEED_KEY = 'hunter_desktop_seed_v7';
-
-  useEffect(() => {
-    const isSeeded = localStorage.getItem(STORAGE_SEED_KEY);
-    if (!isSeeded) {
-      localStorage.setItem(STORAGE_KEYS.EMPRESAS, JSON.stringify(DEFAULT_EMPRESAS));
-      localStorage.setItem(STORAGE_KEYS.ESTAGIARIOS, JSON.stringify(DEFAULT_ESTAGIARIOS));
-      localStorage.setItem(STORAGE_KEYS.ESCOLAS, JSON.stringify(DEFAULT_ESCOLAS));
-      localStorage.setItem('hunter_desktop_seguradoras_v1', JSON.stringify(DEFAULT_SEGURADORAS));
-      localStorage.setItem('hunter_desktop_contratos_parceria_v1', JSON.stringify(DEFAULT_CONTRATOS));
-      localStorage.setItem(STORAGE_SEED_KEY, 'true');
-    }
-  }, []);
-
-  // Inicializando cadastros
+  // Inicializando cadastros - SEMPRE preserva os dados existentes salvos pelo usuário
   const [empresas, setEmpresas] = useState<Empresa[]>(() => {
     try {
-      const isSeeded = localStorage.getItem(STORAGE_SEED_KEY);
-      if (!isSeeded) return DEFAULT_EMPRESAS;
       const saved = localStorage.getItem(STORAGE_KEYS.EMPRESAS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_EMPRESAS;
     } catch {
@@ -161,12 +153,10 @@ export default function App() {
 
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>(() => {
     try {
-      const isSeeded = localStorage.getItem(STORAGE_SEED_KEY);
-      if (!isSeeded) return DEFAULT_ESTAGIARIOS;
       const saved = localStorage.getItem(STORAGE_KEYS.ESTAGIARIOS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_ESTAGIARIOS;
     } catch {
@@ -176,12 +166,10 @@ export default function App() {
 
   const [escolas, setEscolas] = useState<Escola[]>(() => {
     try {
-      const isSeeded = localStorage.getItem(STORAGE_SEED_KEY);
-      if (!isSeeded) return DEFAULT_ESCOLAS;
       const saved = localStorage.getItem(STORAGE_KEYS.ESCOLAS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_ESCOLAS;
     } catch {
@@ -191,6 +179,39 @@ export default function App() {
 
   // Salva no localStorage e dispara auto-save na nuvem quando as listas mudam
   const isLoadedRef = React.useRef(false);
+
+  useEffect(() => {
+    // 1. Inicializa com defaults APENAS caso o localStorage esteja completamente vazio pela 1ª vez
+    if (localStorage.getItem(STORAGE_KEYS.EMPRESAS) === null) {
+      localStorage.setItem(STORAGE_KEYS.EMPRESAS, JSON.stringify(DEFAULT_EMPRESAS));
+    }
+    if (localStorage.getItem(STORAGE_KEYS.ESTAGIARIOS) === null) {
+      localStorage.setItem(STORAGE_KEYS.ESTAGIARIOS, JSON.stringify(DEFAULT_ESTAGIARIOS));
+    }
+    if (localStorage.getItem(STORAGE_KEYS.ESCOLAS) === null) {
+      localStorage.setItem(STORAGE_KEYS.ESCOLAS, JSON.stringify(DEFAULT_ESCOLAS));
+    }
+    if (localStorage.getItem('hunter_desktop_seguradoras_v1') === null) {
+      localStorage.setItem('hunter_desktop_seguradoras_v1', JSON.stringify(DEFAULT_SEGURADORAS));
+    }
+    if (localStorage.getItem('hunter_desktop_contratos_parceria_v1') === null) {
+      localStorage.setItem('hunter_desktop_contratos_parceria_v1', JSON.stringify(DEFAULT_CONTRATOS));
+    }
+
+    // 2. Hidratação inteligente da nuvem (Supabase): restaura cadastros feitos na web
+    hydrateFromSupabaseOnStartup()
+      .then((res) => {
+        if (res.hydrated) {
+          reloadAllLocalData();
+        }
+        // Ativa o auto-save apenas após a hidratação inicial, prevenindo que um estado local em branco sobrescreva a nuvem
+        isLoadedRef.current = true;
+      })
+      .catch((err) => {
+        console.warn('Iniciando com dados locais:', err);
+        isLoadedRef.current = true;
+      });
+  }, []);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.EMPRESAS, JSON.stringify(empresas));
@@ -212,11 +233,6 @@ export default function App() {
       triggerAutoSaveToCloud();
     }
   }, [escolas]);
-
-  useEffect(() => {
-    // Marca como carregado após o primeiro render
-    isLoadedRef.current = true;
-  }, []);
 
   // Handle adding new items
   const handleAddEmpresa = (novo: Omit<Empresa, 'id' | 'dataCadastro'>) => {

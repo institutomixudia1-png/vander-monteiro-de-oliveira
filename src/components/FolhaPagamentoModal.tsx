@@ -726,7 +726,7 @@ export const FolhaPagamentoModal: React.FC<FolhaPagamentoModalProps> = ({
 
         {/* ================= CONTAINER OCULTO PARA CAPTURA DO PDF PELA HTML2PDF ================= */}
         <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '210mm' }}>
-          <div ref={pdfDocRef} data-pdf-root className="bg-white text-black text-[11px]" style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}>
+          <div ref={pdfDocRef} className="bg-white text-black font-sans text-[11px]">
             {estagiariosAtivos.map((tceItem, idx) => {
               const val = valores[tceItem.id] || { faltas: '', bonificacoes: '', adiantamento: '' };
               const cucu = tceItem.estagiario?.nome || '—';

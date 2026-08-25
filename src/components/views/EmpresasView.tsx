@@ -34,7 +34,7 @@ export const EmpresasView: React.FC<EmpresasViewProps> = ({
   const [localContratos, setLocalContratos] = useState<ContratoParceria[]>(() => {
     try {
       const saved = localStorage.getItem('hunter_desktop_contratos_parceria_v1');
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
       }
@@ -48,7 +48,7 @@ export const EmpresasView: React.FC<EmpresasViewProps> = ({
     const loadContratos = () => {
       try {
         const saved = localStorage.getItem('hunter_desktop_contratos_parceria_v1');
-        if (saved) {
+        if (saved !== null) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
             setLocalContratos(parsed);
@@ -60,7 +60,11 @@ export const EmpresasView: React.FC<EmpresasViewProps> = ({
     };
     loadContratos();
     window.addEventListener('focus', loadContratos);
-    return () => window.removeEventListener('focus', loadContratos);
+    window.addEventListener('hunter_database_restored', loadContratos);
+    return () => {
+      window.removeEventListener('focus', loadContratos);
+      window.removeEventListener('hunter_database_restored', loadContratos);
+    };
   }, []);
 
   const activeContratos = contratosProps || localContratos;

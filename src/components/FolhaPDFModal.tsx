@@ -625,7 +625,7 @@ export const FolhaPDFModal: React.FC<FolhaPDFModalProps> = ({ folha, hunterDados
 
         {/* CONTAINER OCULTO PARA CAPTURA DO PDF PELA HTML2PDF */}
         <div style={{ position: 'absolute', left: '-9999px', top: 0, width: '210mm' }}>
-          <div ref={docRef} data-pdf-root className="bg-white text-black text-[11px]" style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}>
+          <div ref={docRef} className="bg-white text-black font-sans text-[11px]">
             {folha.estagiariosAtivos.map((item, idx) => {
               const tce = item.tce;
               const cucu = tce.estagiario?.nome || '—';

@@ -92,49 +92,9 @@ export async function downloadElementAsPDF(
     return { success: false, error: new Error('Elemento não encontrado') };
   }
 
-  // Garante que todas as fontes web estejam completamente carregadas antes de capturar
-  if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
-    try {
-      await document.fonts.ready;
-    } catch (e) {
-      // Ignora erro de suporte a fontes
-    }
-  }
-
   const cleanFilename = filename.endsWith('.pdf') ? filename : `${filename}.pdf`;
   const margin = options?.margin ?? [0, 0, 0, 0];
   const scale = options?.scale ?? 2;
-
-  // Função para padronizar o DOM clonado de forma idêntica em qualquer sistema operacional (Win 7, Win 10, Win 11, Mac)
-  const normalizeClonedDoc = (clonedDoc: Document) => {
-    try {
-      const style = clonedDoc.createElement('style');
-      style.innerHTML = `
-        * {
-          -webkit-font-smoothing: antialiased !important;
-          -moz-osx-font-smoothing: grayscale !important;
-          text-rendering: geometricPrecision !important;
-          box-sizing: border-box !important;
-        }
-        body, div, p, span, h1, h2, h3, h4, table, td, th, li, strong, em {
-          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
-        }
-      `;
-      clonedDoc.head.appendChild(style);
-
-      const clonedTarget = clonedDoc.querySelector(`[data-pdf-root]`) || clonedDoc.body.firstElementChild;
-      if (clonedTarget instanceof HTMLElement) {
-        clonedTarget.style.width = '794px';
-        clonedTarget.style.maxWidth = '794px';
-        clonedTarget.style.minWidth = '794px';
-        clonedTarget.style.margin = '0 auto';
-        clonedTarget.style.backgroundColor = '#ffffff';
-        clonedTarget.style.color = '#000000';
-      }
-    } catch (e) {
-      console.warn('Erro ao normalizar clone do documento:', e);
-    }
-  };
 
   const opt = {
     margin: margin,
@@ -146,12 +106,7 @@ export async function downloadElementAsPDF(
       allowTaint: true,
       logging: false,
       scrollY: 0,
-      scrollX: 0,
-      windowWidth: 1024, // Fixa a largura de renderização para anular diferenças de DPI e zoom do Windows 11
-      backgroundColor: '#ffffff',
-      onclone: (clonedDoc: Document) => {
-        normalizeClonedDoc(clonedDoc);
-      }
+      backgroundColor: '#ffffff'
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: { mode: options?.pagebreakMode ?? ['css', 'legacy'] }
@@ -192,12 +147,7 @@ export async function downloadElementAsPDF(
       useCORS: true,
       allowTaint: true,
       scrollY: 0,
-      scrollX: 0,
-      windowWidth: 1024,
-      backgroundColor: '#ffffff',
-      onclone: (clonedDoc: Document) => {
-        normalizeClonedDoc(clonedDoc);
-      }
+      backgroundColor: '#ffffff'
     });
 
     const imgData = canvas.toDataURL('image/jpeg', 0.98);

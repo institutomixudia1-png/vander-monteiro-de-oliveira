@@ -220,13 +220,10 @@ export const TCEPDFModal: React.FC<TCEPDFModalProps> = ({ tce, autoDownload = fa
 
         {/* Corpo do Documento (A4 Estilo e Impressão) */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-zinc-900/50 print:p-0 print:bg-white print:overflow-visible">
-          <div ref={docRef} data-pdf-root className="w-full max-w-[800px] mx-auto bg-white text-black font-sans">
+          <div ref={docRef} className="max-w-[800px] mx-auto">
             
             {/* CONTAINER ÚNICO CONTÍNUO DO TCE */}
-            <div 
-              className="relative overflow-hidden bg-white text-black p-8 pb-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none text-[11px] leading-[1.25] select-text"
-              style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
-            >
+            <div className="relative overflow-hidden bg-white text-black p-6 sm:p-8 pb-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none font-sans text-[11px] leading-[1.25] select-text">
               
               {/* MARCA D'ÁGUA HUNTER */}
               <HunterWatermark size={440} opacity="opacity-[0.09]" />

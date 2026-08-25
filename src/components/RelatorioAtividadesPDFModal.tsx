@@ -211,12 +211,7 @@ export const RelatorioAtividadesPDFModal: React.FC<RelatorioAtividadesPDFModalPr
 
         {/* Printable Document Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-zinc-900/50 print:p-0 print:bg-white print:overflow-visible">
-          <div 
-            ref={docRef} 
-            data-pdf-root
-            className="relative overflow-hidden w-full max-w-[800px] mx-auto bg-white text-black p-8 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none text-[11px] leading-relaxed select-text"
-            style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
-          >
+          <div ref={docRef} className="relative overflow-hidden max-w-[800px] mx-auto bg-white text-black p-8 sm:p-12 rounded-xl shadow-2xl print:shadow-none print:rounded-none print:p-0 print:max-w-none font-serif text-[11px] leading-relaxed select-text">
             
             {/* Watermark */}
             <HunterWatermark size={440} opacity="opacity-[0.09]" />

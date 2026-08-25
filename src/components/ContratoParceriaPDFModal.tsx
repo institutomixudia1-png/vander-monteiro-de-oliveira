@@ -189,10 +189,9 @@ export const ContratoParceriaPDFModal: React.FC<ContratoParceriaPDFModalProps> =
         {/* Container com largura A4 onde o documento será capturado pelo html2pdf.js */}
         <div
           ref={docRef}
-          data-pdf-root
           id="documento-contrato-parceria-pdf"
-          className="w-full max-w-[800px] bg-white text-black font-sans shadow-2xl rounded-sm p-8 text-[11px] leading-[1.4] text-justify select-text"
-          style={{ fontFamily: 'Arial, "Helvetica Neue", Helvetica, sans-serif' }}
+          className="w-full max-w-[800px] bg-white text-black font-sans shadow-2xl rounded-sm p-6 sm:p-8 text-[11px] leading-[1.4] text-justify select-text"
+          style={{ fontFamily: 'Arial, sans-serif' }}
         >
           {/* ======================= CONTEÚDO DO CONTRATO ======================= */}
           <div className="relative overflow-hidden pb-2">

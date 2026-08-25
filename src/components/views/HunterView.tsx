@@ -123,7 +123,11 @@ export const HunterView: React.FC<HunterViewProps> = ({
   const [hunterDados, setHunterDados] = useState<HunterDados | null>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_HUNTER_DADOS);
-      return saved ? JSON.parse(saved) : DEFAULT_HUNTER_DADOS;
+      if (saved !== null) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+      return DEFAULT_HUNTER_DADOS;
     } catch {
       return DEFAULT_HUNTER_DADOS;
     }
@@ -133,9 +137,9 @@ export const HunterView: React.FC<HunterViewProps> = ({
   const [seguradoras, setSeguradoras] = useState<Seguradora[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_SEGURADORAS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_SEGURADORAS;
     } catch {
@@ -147,9 +151,9 @@ export const HunterView: React.FC<HunterViewProps> = ({
   const [contratos, setContratos] = useState<ContratoParceria[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_CONTRATOS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_CONTRATOS;
     } catch {
@@ -161,9 +165,9 @@ export const HunterView: React.FC<HunterViewProps> = ({
   const [estagiariosState, setEstagiarios] = useState<Estagiario[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_ESTAGIARIOS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) return parsed;
       }
       return DEFAULT_ESTAGIARIOS;
     } catch {
@@ -176,10 +180,8 @@ export const HunterView: React.FC<HunterViewProps> = ({
   // Estado para Termos de Compromisso de Estágio (TCEs)
   const [tces, setTces] = useState<TCEContrato[]>(() => {
     try {
-      const isReset = localStorage.getItem('hunter_desktop_reset_v3');
-      if (!isReset) return [];
       const saved = localStorage.getItem(STORAGE_KEY_TCES);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
       }
@@ -192,10 +194,8 @@ export const HunterView: React.FC<HunterViewProps> = ({
   // Estado para Termos de Rescisão de Estágio
   const [rescisoes, setRescisoes] = useState<TermoRescisaoData[]>(() => {
     try {
-      const isReset = localStorage.getItem('hunter_desktop_reset_v3');
-      if (!isReset) return [];
       const saved = localStorage.getItem(STORAGE_KEY_RESCISOES);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
       }
@@ -208,10 +208,8 @@ export const HunterView: React.FC<HunterViewProps> = ({
   // Estado para Folhas de Pagamento Salvas
   const [folhasPagamento, setFolhasPagamento] = useState<FolhaPagamentoSalva[]>(() => {
     try {
-      const isReset = localStorage.getItem('hunter_desktop_reset_v3');
-      if (!isReset) return [];
       const saved = localStorage.getItem(STORAGE_KEY_FOLHAS);
-      if (saved) {
+      if (saved !== null) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) return parsed;
       }
@@ -264,25 +262,25 @@ export const HunterView: React.FC<HunterViewProps> = ({
     const handleDatabaseRestored = () => {
       try {
         const savedDados = localStorage.getItem(STORAGE_KEY_HUNTER_DADOS);
-        if (savedDados) setHunterDados(JSON.parse(savedDados));
+        if (savedDados !== null) setHunterDados(JSON.parse(savedDados));
 
         const savedSeg = localStorage.getItem(STORAGE_KEY_SEGURADORAS);
-        if (savedSeg) setSeguradoras(JSON.parse(savedSeg));
+        if (savedSeg !== null) setSeguradoras(JSON.parse(savedSeg));
 
         const savedContr = localStorage.getItem(STORAGE_KEY_CONTRATOS);
-        if (savedContr) setContratos(JSON.parse(savedContr));
+        if (savedContr !== null) setContratos(JSON.parse(savedContr));
 
         const savedEstag = localStorage.getItem(STORAGE_KEY_ESTAGIARIOS);
-        if (savedEstag) setEstagiarios(JSON.parse(savedEstag));
+        if (savedEstag !== null) setEstagiarios(JSON.parse(savedEstag));
 
         const savedTces = localStorage.getItem(STORAGE_KEY_TCES);
-        if (savedTces) setTces(JSON.parse(savedTces));
+        if (savedTces !== null) setTces(JSON.parse(savedTces));
 
         const savedResc = localStorage.getItem(STORAGE_KEY_RESCISOES);
-        if (savedResc) setRescisoes(JSON.parse(savedResc));
+        if (savedResc !== null) setRescisoes(JSON.parse(savedResc));
 
         const savedFolhas = localStorage.getItem(STORAGE_KEY_FOLHAS);
-        if (savedFolhas) setFolhasPagamento(JSON.parse(savedFolhas));
+        if (savedFolhas !== null) setFolhasPagamento(JSON.parse(savedFolhas));
       } catch (err) {
         console.error('Erro ao atualizar estados locais após restauração:', err);
       }
