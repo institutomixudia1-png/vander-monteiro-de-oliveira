@@ -7,6 +7,7 @@ import { WhatsAppIcon } from './WhatsAppButton';
 
 interface DesktopHeaderProps {
   onOpenDownloadModal?: () => void;
+  onOpenBancoDados?: () => void;
   onSaveToCloud?: () => void;
   isSavingCloud?: boolean;
   cloudSaveStatus?: 'idle' | 'success' | 'error';
@@ -18,6 +19,7 @@ interface DesktopHeaderProps {
 
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onOpenDownloadModal,
+  onOpenBancoDados,
   onSaveToCloud,
   isSavingCloud = false,
   cloudSaveStatus = 'idle',
@@ -107,7 +109,11 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
           {/* Botão Banco de Dados */}
           <GlowButton
-            onClick={() => {}}
+            onClick={() => {
+              if (onOpenBancoDados) {
+                onOpenBancoDados();
+              }
+            }}
             icon={<Database className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />}
             id="btn-nav-banco-dados"
             className="py-2 px-4 text-xs"

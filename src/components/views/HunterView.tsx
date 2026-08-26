@@ -609,47 +609,6 @@ export const HunterView: React.FC<HunterViewProps> = ({
   const [cpDiaPagamento, setCpDiaPagamento] = useState('');
   const [cpDataInicio, setCpDataInicio] = useState('');
 
-  useEffect(() => {
-    if (hunterDados) {
-      localStorage.setItem(STORAGE_KEY_HUNTER_DADOS, JSON.stringify(hunterDados));
-    }
-  }, [hunterDados]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_SEGURADORAS, JSON.stringify(seguradoras));
-  }, [seguradoras]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_CONTRATOS, JSON.stringify(contratos));
-  }, [contratos]);
-
-  useEffect(() => {
-    if (empresas) {
-      const empIds = new Set(empresas.map(e => e.id));
-      const empCnpjs = new Set(empresas.map(e => e.cnpj).filter(Boolean));
-      const empRazaos = new Set(empresas.map(e => (e.razaoSocial || e.nome || '').trim().toLowerCase()).filter(Boolean));
-
-      setContratos(prev => {
-        const filtered = prev.filter(ct => {
-          if (ct.empresaId && empIds.has(ct.empresaId)) return true;
-          if (ct.empresa?.id && empIds.has(ct.empresa.id)) return true;
-          if (ct.empresa?.cnpj && empCnpjs.has(ct.empresa.cnpj)) return true;
-          const name = (ct.empresa?.razaoSocial || ct.empresa?.nome || '').trim().toLowerCase();
-          if (name && empRazaos.has(name)) return true;
-          return false;
-        });
-        if (filtered.length !== prev.length) {
-          return filtered;
-        }
-        return prev;
-      });
-    }
-  }, [empresas]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_RESCISOES, JSON.stringify(rescisoes));
-  }, [rescisoes]);
-
   // Lista de empresas que possuem contrato de parceria ativo
   const empresasComContratoAtivo = (() => {
     const list: Empresa[] = [];

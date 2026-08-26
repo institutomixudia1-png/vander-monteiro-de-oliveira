@@ -169,6 +169,44 @@ export const DemandaView: React.FC = () => {
   const [isEditingSenha, setIsEditingSenha] = useState(false);
   const [senhaSavedAlert, setSenhaSavedAlert] = useState(false);
 
+  // Listener para sincronizar e recarregar demandas após restauração do Supabase
+  useEffect(() => {
+    const handleDatabaseRestored = () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY_DEMANDAS);
+        if (saved !== null) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            const list = parsed.map((d: any) => ({
+              id: d.id || `demanda_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+              mensagem: d.mensagem || '',
+              dataDemanda: d.dataDemanda || '',
+            }));
+            const last = list[list.length - 1];
+            if (last && last.mensagem.trim() !== '') {
+              list.push({
+                id: `demanda_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+                mensagem: '',
+                dataDemanda: '',
+              });
+            }
+            setDemandas(list);
+          }
+        }
+
+        const savedPass = localStorage.getItem(STORAGE_KEY_DEMANDA_PASSWORD);
+        if (savedPass && savedPass.trim()) {
+          setDemandaSenha(savedPass.trim());
+        }
+      } catch (err) {
+        console.error('Erro ao restaurar demandas em DemandaView:', err);
+      }
+    };
+
+    window.addEventListener('hunter_database_restored', handleDatabaseRestored);
+    return () => window.removeEventListener('hunter_database_restored', handleDatabaseRestored);
+  }, []);
+
   const handleSalvarSenhaDemanda = (novaSenha: string) => {
     const apenasDigitos = novaSenha.replace(/\D/g, '').slice(0, 6);
     setDemandaSenha(apenasDigitos);
