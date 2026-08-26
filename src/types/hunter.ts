@@ -1,4 +1,4 @@
-export type TabId = 'hunter' | 'empresas' | 'estagiarios' | 'escolas';
+export type TabId = 'hunter' | 'empresas' | 'estagiarios' | 'escolas' | 'demanda';
 
 export interface Empresa {
   id: string;
@@ -257,5 +257,19 @@ export function getEstagiariosAtivosDaEmpresa(
 export const STORAGE_KEY_SYSTEM_PASSWORD = 'hunter_system_password_v1';
 export const DEFAULT_SYSTEM_PASSWORD = '102030';
 export const FORGOT_SYSTEM_PASSWORD = '203040';
+
+export const STORAGE_KEY_DEMANDA_PASSWORD = 'hunter_demanda_password_v1';
+export const DEFAULT_DEMANDA_PASSWORD = '607080';
+
+export interface DemandaRegistro {
+  id: string;
+  mensagem: string;
+  dataDemanda: string;
+  dataHoraISO: string;
+  titulo?: string;
+}
+
+export const STORAGE_KEY_DEMANDAS = 'hunter_desktop_demandas_v1';
+export const STORAGE_KEY_DEMANDA_RASCUNHO = 'hunter_desktop_demanda_rascunho_v1';
 
 

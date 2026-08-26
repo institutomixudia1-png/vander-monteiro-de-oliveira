@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Lock, Eye, EyeOff, ShieldAlert, ArrowRight, HelpCircle, Loader2, CloudDownload, CheckCircle2 } from 'lucide-react';
 import { HunterLogo } from './HunterLogo';
 import { HunterWatermark } from './HunterWatermark';
-import { FORGOT_SYSTEM_PASSWORD } from '../types/hunter';
+import { FORGOT_SYSTEM_PASSWORD, STORAGE_KEY_DEMANDA_PASSWORD, DEFAULT_DEMANDA_PASSWORD, TabId } from '../types/hunter';
 import { restoreFromSupabase } from '../lib/supabase';
 
 interface SystemLockScreenProps {
   currentPassword: string;
-  onUnlock: () => void;
+  onUnlock: (targetTab?: TabId) => void;
   onUpdatePassword: (newPass: string) => void;
 }
 
@@ -28,7 +28,25 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
     setErrorMsg('');
 
     const cleanPass = inputSenha.trim();
-    if (cleanPass === currentPassword) {
+    const mainPass = currentPassword.trim();
+    
+    let demandaPass = '';
+    try {
+      const savedDemanda = localStorage.getItem(STORAGE_KEY_DEMANDA_PASSWORD);
+      if (savedDemanda && savedDemanda.trim()) {
+        demandaPass = savedDemanda.trim();
+      } else {
+        demandaPass = DEFAULT_DEMANDA_PASSWORD;
+      }
+    } catch {
+      demandaPass = DEFAULT_DEMANDA_PASSWORD;
+    }
+
+    const isMainSystemPassword = cleanPass === mainPass;
+    const isDemandaPassword = demandaPass !== '' && cleanPass === demandaPass;
+    const isForgotRescuePassword = cleanPass === FORGOT_SYSTEM_PASSWORD;
+
+    if (isMainSystemPassword || isDemandaPassword || isForgotRescuePassword) {
       // Baixar banco de dados da nuvem e restaurar instantaneamente
       setIsRestoringCloud(true);
       setCloudStatusText('Sincronizando com a nuvem Supabase...');
@@ -45,7 +63,12 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
       } finally {
         setTimeout(() => {
           setIsRestoringCloud(false);
-          onUnlock();
+          // Se digitou a senha da demanda (e não for a mesma do painel), abre direto a Demanda; caso contrário abre o Painel normal
+          if (isDemandaPassword && !isMainSystemPassword) {
+            onUnlock('demanda');
+          } else {
+            onUnlock('hunter');
+          }
         }, 500);
       }
     } else {

@@ -2,7 +2,7 @@ import React from 'react';
 import { HunterLogo } from './HunterLogo';
 import { GlowButton } from './GlowButton';
 import { TabId } from '../types/hunter';
-import { Crosshair, Building2, UserCheck, GraduationCap, CloudUpload, CheckCircle2, Loader2, AlertCircle, Database } from 'lucide-react';
+import { Crosshair, Building2, UserCheck, GraduationCap, CloudUpload, CheckCircle2, Loader2, AlertCircle, Database, ClipboardList } from 'lucide-react';
 import { WhatsAppIcon } from './WhatsAppButton';
 
 interface DesktopHeaderProps {
@@ -113,6 +113,17 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             className="py-2 px-4 text-xs"
           >
             Banco de Dados
+          </GlowButton>
+
+          {/* Botão Demanda */}
+          <GlowButton
+            active={activeTab === 'demanda'}
+            onClick={() => onSelectTab('demanda')}
+            icon={<ClipboardList className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />}
+            id="btn-nav-demanda"
+            className="py-2 px-4 text-xs"
+          >
+            Demanda
           </GlowButton>
         </nav>
       </div>

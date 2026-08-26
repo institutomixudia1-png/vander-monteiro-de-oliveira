@@ -12,6 +12,7 @@ import { HunterView } from './components/views/HunterView';
 import { EmpresasView } from './components/views/EmpresasView';
 import { EstagiariosView } from './components/views/EstagiariosView';
 import { EscolasView } from './components/views/EscolasView';
+import { DemandaView } from './components/views/DemandaView';
 import { HunterWatermark } from './components/HunterWatermark';
 import { DEFAULT_EMPRESAS, DEFAULT_ESTAGIARIOS, DEFAULT_ESCOLAS, DEFAULT_SEGURADORAS, DEFAULT_CONTRATOS } from './data/sampleData';
 import { syncAllToSupabase, triggerAutoSaveToCloud, hydrateFromSupabaseOnStartup, CloudSyncStatus } from './lib/supabase';
@@ -516,6 +517,8 @@ export default function App() {
         return 'Banco de Estagiários';
       case 'escolas':
         return 'Relação de Escolas';
+      case 'demanda':
+        return 'Painel de Demanda';
       default:
         return 'Hunter Desktop';
     }
@@ -600,15 +603,22 @@ export default function App() {
             onDeleteEscola={handleDeleteEscola}
           />
         )}
+
+        {activeTab === 'demanda' && (
+          <DemandaView />
+        )}
       </main>
 
       {/* 3. Tela de Bloqueio por Senha de 6 dígitos com sincronização da Nuvem */}
       {!isUnlocked && (
         <SystemLockScreen
           currentPassword={systemPassword}
-          onUnlock={() => {
+          onUnlock={(targetTab) => {
             reloadAllLocalData();
             setIsUnlocked(true);
+            if (targetTab) {
+              setActiveTab(targetTab);
+            }
           }}
           onUpdatePassword={handleUpdatePassword}
         />
