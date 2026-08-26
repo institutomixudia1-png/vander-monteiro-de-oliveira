@@ -166,6 +166,8 @@ export const DemandaView: React.FC = () => {
     }
   });
   const [showDemandaSenha, setShowDemandaSenha] = useState(false);
+  const [isEditingSenha, setIsEditingSenha] = useState(false);
+  const [senhaSavedAlert, setSenhaSavedAlert] = useState(false);
 
   const handleSalvarSenhaDemanda = (novaSenha: string) => {
     const apenasDigitos = novaSenha.replace(/\D/g, '').slice(0, 6);
@@ -173,8 +175,8 @@ export const DemandaView: React.FC = () => {
     if (apenasDigitos.length === 6) {
       localStorage.setItem(STORAGE_KEY_DEMANDA_PASSWORD, apenasDigitos);
       triggerAutoSaveToCloud();
-      setFeedback(`✓ Senha de acesso direto à Demanda configurada: ${apenasDigitos} (Ao digitar esta senha no Acesso Restrito, a Demanda abrirá diretamente).`);
-      setTimeout(() => setFeedback(null), 5000);
+      setSenhaSavedAlert(true);
+      setTimeout(() => setSenhaSavedAlert(false), 3000);
     }
   };
 
@@ -391,7 +393,7 @@ export const DemandaView: React.FC = () => {
             <span className="text-[#FFD700] font-extrabold font-mono text-sm">{totalDemandasPostadas}</span>
           </div>
 
-          {/* Caixa de Texto para Senha de 6 Dígitos de Acesso Restrito à Demanda */}
+          {/* Caixa de Configuração para Senha de 6 Dígitos de Acesso Direto à Demanda */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/95 border-2 border-amber-500/70 shadow-[0_0_18px_rgba(255,215,0,0.25)]">
             <div className="flex items-center gap-1.5 text-xs text-[#FFD700] font-extrabold">
               <KeyRound className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_6px_rgba(255,215,0,0.85)]" />
@@ -400,23 +402,39 @@ export const DemandaView: React.FC = () => {
             
             <div className="relative flex items-center">
               <input
-                type={showDemandaSenha ? 'text' : 'password'}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                data-lpignore="true"
+                data-form-type="other"
+                name="hunter_demanda_access_pin"
                 maxLength={6}
-                value={demandaSenha}
+                value={showDemandaSenha ? demandaSenha : (demandaSenha ? '•'.repeat(demandaSenha.length) : '')}
+                onFocus={() => setShowDemandaSenha(true)}
                 onChange={(e) => handleSalvarSenhaDemanda(e.target.value)}
                 placeholder="607080"
                 className="w-24 px-2 py-1 text-center font-mono font-black text-sm text-[#FFD700] bg-black border border-amber-500/60 rounded-lg focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-500/40 tracking-widest shadow-inner placeholder-zinc-600"
-                title="Digite uma senha de 6 dígitos. Ao colocar esta senha na tela de Acesso Restrito do sistema, a página de Demanda será aberta automaticamente."
+                title="Senha de 6 dígitos para acesso direto à Demanda pelo Acesso Restrito"
               />
               <button
                 type="button"
                 onClick={() => setShowDemandaSenha(!showDemandaSenha)}
-                className="ml-1 text-zinc-400 hover:text-[#FFD700] p-1 cursor-pointer transition-colors"
-                title={showDemandaSenha ? 'Ocultar Senha' : 'Ver Senha'}
+                className="ml-1.5 text-zinc-400 hover:text-[#FFD700] p-1 cursor-pointer transition-colors"
+                title={showDemandaSenha ? 'Ocultar Dígitos' : 'Ver Dígitos'}
               >
                 {showDemandaSenha ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
               </button>
             </div>
+
+            {senhaSavedAlert && (
+              <span className="text-[10px] font-extrabold text-[#FFD700] bg-amber-500/20 px-2 py-0.5 rounded-md border border-amber-400/60 animate-fadeIn">
+                Salva!
+              </span>
+            )}
           </div>
         </div>
       </header>
