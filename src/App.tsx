@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react';
 import { TabId, Empresa, Estagiario, Escola, STORAGE_KEY_SYSTEM_PASSWORD, DEFAULT_SYSTEM_PASSWORD, TCEContrato, TermoRescisaoData, ContratoParceria, getEstagiariosAtivosDaEmpresa } from './types/hunter';
 import { DesktopHeader } from './components/DesktopHeader';
 import { DownloadModal } from './components/DownloadModal';
-import { BancoDadosModal } from './components/BancoDadosModal';
 import { SystemLockScreen } from './components/SystemLockScreen';
 import { HunterView } from './components/views/HunterView';
 import { EmpresasView } from './components/views/EmpresasView';
@@ -28,7 +27,6 @@ const STORAGE_KEYS = {
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabId>('hunter');
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
-  const [isBancoDadosModalOpen, setIsBancoDadosModalOpen] = useState(false);
 
   // Cloud Save State
   const [isSavingCloud, setIsSavingCloud] = useState(false);
@@ -531,7 +529,6 @@ export default function App() {
       {/* 1. Desktop Application Header com Botões de Navegação ao lado da logo */}
       <DesktopHeader
         onOpenDownloadModal={() => setIsDownloadModalOpen(true)}
-        onOpenBancoDados={() => setIsBancoDadosModalOpen(true)}
         onSaveToCloud={handleSaveToCloud}
         isSavingCloud={isSavingCloud}
         cloudSaveStatus={cloudSaveStatus}
@@ -631,15 +628,6 @@ export default function App() {
       <DownloadModal
         isOpen={isDownloadModalOpen}
         onClose={() => setIsDownloadModalOpen(false)}
-      />
-
-      {/* 5. Modal de Banco de Dados & Nuvem */}
-      <BancoDadosModal
-        isOpen={isBancoDadosModalOpen}
-        onClose={() => setIsBancoDadosModalOpen(false)}
-        onDataRestored={() => {
-          reloadAllLocalData();
-        }}
       />
     </div>
   );

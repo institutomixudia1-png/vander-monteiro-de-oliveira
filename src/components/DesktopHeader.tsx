@@ -34,6 +34,10 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
     window.open(`https://web.whatsapp.com/send?phone=${phone}&text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
+  const handleOpenBancoDados = () => {
+    window.open('https://hunterbd.netlify.app', '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <header className="h-16 bg-zinc-950/95 px-4 flex items-center justify-between select-none shrink-0 relative z-30">
       {/* Left section: App Brand Logo & Name + Navigation Buttons ao lado da logo */}
@@ -109,11 +113,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
           {/* Botão Banco de Dados */}
           <GlowButton
-            onClick={() => {
-              if (onOpenBancoDados) {
-                onOpenBancoDados();
-              }
-            }}
+            onClick={handleOpenBancoDados}
             icon={<Database className="w-4 h-4 text-[#FFD700] drop-shadow-[0_0_8px_rgba(255,215,0,0.85)]" />}
             id="btn-nav-banco-dados"
             className="py-2 px-4 text-xs"
