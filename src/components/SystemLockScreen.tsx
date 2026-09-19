@@ -47,16 +47,17 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
     const isForgotRescuePassword = cleanPass === FORGOT_SYSTEM_PASSWORD;
 
     if (isMainSystemPassword || isDemandaPassword || isForgotRescuePassword) {
-      // Baixar banco de dados da nuvem e restaurar instantaneamente
+      // Baixar banco de dados da nuvem e restaurar com limite de tempo para nunca travar
       setIsRestoringCloud(true);
       setCloudStatusText('Sincronizando com a nuvem Supabase...');
 
       try {
-        const res = await restoreFromSupabase();
-        if (res.success) {
+        const timeoutPromise = new Promise<{ success: boolean; message: string }>((resolve) =>
+          setTimeout(() => resolve({ success: false, message: 'Tempo limite' }), 2000)
+        );
+        const res = await Promise.race([restoreFromSupabase(), timeoutPromise]);
+        if (res && res.success) {
           setCloudStatusText('Banco de dados da nuvem restaurado!');
-        } else {
-          console.warn('Aviso ao sincronizar da nuvem:', res.message);
         }
       } catch (err: any) {
         console.warn('Não foi possível sincronizar da nuvem:', err);
@@ -69,10 +70,10 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
           } else {
             onUnlock('hunter');
           }
-        }, 500);
+        }, 300);
       }
     } else {
-      setErrorMsg('Senha incorreta! Digite a senha de 6 dígitos válida.');
+      setErrorMsg('Senha incorreta! Digite a senha de 6 dígitos válida (Padrão: 102030).');
     }
   };
 
@@ -151,9 +152,18 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-zinc-400 mb-2">
-                Digite a senha de 6 dígitos:
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-semibold text-zinc-400">
+                  Digite a senha de 6 dígitos:
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setInputSenha('102030')}
+                  className="text-[11px] font-bold text-amber-400 hover:text-amber-300 bg-amber-500/15 hover:bg-amber-500/25 px-2 py-0.5 rounded-lg border border-amber-500/30 transition-all cursor-pointer"
+                >
+                  Usar Padrão (102030)
+                </button>
+              </div>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -197,12 +207,22 @@ export const SystemLockScreen: React.FC<SystemLockScreenProps> = ({
             </button>
           </form>
 
-          {/* Botão Esqueci minha senha */}
-          <div className="mt-5 pt-4 border-t border-zinc-800/80 w-full flex justify-center">
+          {/* Atalhos Rápidos e Esqueci Minha Senha */}
+          <div className="mt-5 pt-4 border-t border-zinc-800/80 w-full flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setInputSenha('607080');
+              }}
+              className="text-zinc-400 hover:text-amber-300 transition-colors cursor-pointer"
+            >
+              Painel Demanda: <span className="font-mono text-amber-400 font-bold">607080</span>
+            </button>
+
             <button
               type="button"
               onClick={handleForgotPass}
-              className="text-xs font-bold text-amber-400/90 hover:text-amber-300 underline underline-offset-4 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="font-bold text-amber-400/90 hover:text-amber-300 underline underline-offset-4 flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <HelpCircle className="w-3.5 h-3.5" />
               <span>Esqueci minha senha</span>
